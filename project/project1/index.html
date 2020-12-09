@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Klarissa Flores" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>What You Can Tell About a State from Their Level of Education</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project1/">What You Can Tell About a State from Their Level of Education</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         October 18, 2020 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+<script src="../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="../../rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="../../rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<script src="../../rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="../../rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="../../rmarkdown-libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/plotly-main/plotly-latest.min.js"></script>
+
+
+<div id="klarissa-flores-kmf2747" class="section level2">
+<h2>Klarissa Flores (kmf2747)</h2>
+<pre class="r"><code>library(dplyr)
+library(tidyverse)</code></pre>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<div id="the-dataset-crime-contains-information-about-how-hate-crimes-may-be-tied-to-income-inequality-in-the-us.-it-is-part-of-the-fivethirtyeight-package-on-r.-it-includes-data-about-median-household-income-the-average-number-of-hate-crimes-recorded-by-the-fbi-and-the-southern-poverty-law-center-the-share-of-the-population-that-voted-for-trump-and-more.-the-education-dataset-contains-the-percentage-of-individuals-from-each-state-that-have-graduated-high-school-and-the-percentage-of-individuals-from-each-state-that-have-at-least-a-four-year-college-degree.-this-dataset-was-acquired-from-the-website-httpsworldpopulationreview.comstate-rankingseducational-attainment-by-state.-i-chose-these-two-datasets-because-i-thought-it-would-be-interesting-to-see-if-education-level-had-an-influence-on-different-variables-from-the-crime-dataset.-i-expected-a-negative-correlation-between-education-level-and-the-percentage-of-individuals-who-voted-for-donald-trump-and-a-positive-correlation-between-education-level-and-median-household-income-per-state." class="section level5">
+<h5>The dataset <code>crime</code> contains information about how hate crimes may be tied to income inequality in the US. It is part of the <code>fivethirtyeight</code> package on R. It includes data about median household income, the average number of hate crimes recorded by the FBI and the Southern Poverty Law Center, the share of the population that voted for Trump, and more. The <code>education</code> dataset contains the percentage of individuals from each state that have graduated high school and the percentage of individuals from each state that have at least a four-year college degree. This dataset was acquired from the website <a href="https://worldpopulationreview.com/state-rankings/educational-attainment-by-state" class="uri">https://worldpopulationreview.com/state-rankings/educational-attainment-by-state</a>. I chose these two datasets because I thought it would be interesting to see if education level had an influence on different variables from the <code>crime</code> dataset. I expected a negative correlation between education level and the percentage of individuals who voted for Donald Trump, and a positive correlation between education level and median household income per state.</h5>
+<pre class="r"><code>hate_crimes &lt;- fivethirtyeight::hate_crimes
+crime &lt;- as.data.frame(hate_crimes)
+glimpse(crime)</code></pre>
+<pre><code>## Rows: 51
+## Columns: 13
+## $ state                       &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arizona&quot;, &quot;Arkansas…
+## $ state_abbrev                &lt;chr&gt; &quot;AL&quot;, &quot;AK&quot;, &quot;AZ&quot;, &quot;AR&quot;, &quot;CA&quot;, &quot;CO&quot;, &quot;CT&quot;,…
+## $ median_house_inc            &lt;int&gt; 42278, 67629, 49254, 44922, 60487, 60940,…
+## $ share_unemp_seas            &lt;dbl&gt; 0.060, 0.064, 0.063, 0.052, 0.059, 0.040,…
+## $ share_pop_metro             &lt;dbl&gt; 0.64, 0.63, 0.90, 0.69, 0.97, 0.80, 0.94,…
+## $ share_pop_hs                &lt;dbl&gt; 0.821, 0.914, 0.842, 0.824, 0.806, 0.893,…
+## $ share_non_citizen           &lt;dbl&gt; 0.02, 0.04, 0.10, 0.04, 0.13, 0.06, 0.06,…
+## $ share_white_poverty         &lt;dbl&gt; 0.12, 0.06, 0.09, 0.12, 0.09, 0.07, 0.06,…
+## $ gini_index                  &lt;dbl&gt; 0.472, 0.422, 0.455, 0.458, 0.471, 0.457,…
+## $ share_non_white             &lt;dbl&gt; 0.35, 0.42, 0.49, 0.26, 0.61, 0.31, 0.30,…
+## $ share_vote_trump            &lt;dbl&gt; 0.63, 0.53, 0.50, 0.60, 0.33, 0.44, 0.41,…
+## $ hate_crimes_per_100k_splc   &lt;dbl&gt; 0.12583893, 0.14374012, 0.22531995, 0.069…
+## $ avg_hatecrimes_per_100k_fbi &lt;dbl&gt; 1.8064105, 1.6567001, 3.4139280, 0.869208…</code></pre>
+<pre class="r"><code>education = read.csv(&quot;education.csv&quot;)
+glimpse(education)</code></pre>
+<pre><code>## Rows: 52
+## Columns: 3
+## $ State                     &lt;fct&gt; Montana, Minnesota, Wyoming, New Hampshire,…
+## $ PercentHighSchoolOrHigher &lt;dbl&gt; 93.2, 93.0, 92.9, 92.9, 92.7, 92.6, 92.5, 9…
+## $ PercentBachelorsOrHigher  &lt;dbl&gt; 31.2, 35.4, 26.9, 36.5, 29.2, 37.3, 29.5, 3…</code></pre>
+</div>
+</div>
+<div id="tidying" class="section level2">
+<h2>Tidying</h2>
+<div id="i-felt-like-both-of-my-original-datasets-were-tidy-enough-already.-i-did-however-want-to-take-out-data-from-the-crime-dataset-because-it-had-many-variables-that-i-either-wasnt-interested-in-or-was-taken-outside-of-2016-and-i-felt-it-was-important-to-make-sure-all-the-data-in-that-set-was-taken-in-the-same-year.-i-tried-using-pivot_longer-to-see-if-there-was-a-way-i-could-better-tidy-my-data-but-i-personally-preferred-the-original-dataset-so-i-undid-that-with-pivot_wider." class="section level5">
+<h5>I felt like both of my original datasets were tidy enough already. I did, however, want to take out data from the <code>crime</code> dataset because it had many variables that I either wasn't interested in, or was taken outside of 2016, and I felt it was important to make sure all the data in that set was taken in the same year. I tried using <code>pivot_longer</code> to see if there was a way I could better tidy my data but I, personally, preferred the original dataset, so I undid that with <code>pivot_wider</code>.</h5>
+<pre class="r"><code># removing variables
+crime &lt;- crime %&gt;% select(-share_pop_metro, -share_pop_hs, -share_white_poverty, 
+    -gini_index, -state_abbrev)
+# trying to tidy
+tidy &lt;- crime %&gt;% pivot_longer(contains(&quot;hate&quot;))
+glimpse(tidy)</code></pre>
+<pre><code>## Rows: 102
+## Columns: 8
+## $ state             &lt;chr&gt; &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Alaska&quot;, &quot;Arizona&quot;…
+## $ median_house_inc  &lt;int&gt; 42278, 42278, 67629, 67629, 49254, 49254, 44922, 44…
+## $ share_unemp_seas  &lt;dbl&gt; 0.060, 0.060, 0.064, 0.064, 0.063, 0.063, 0.052, 0.…
+## $ share_non_citizen &lt;dbl&gt; 0.02, 0.02, 0.04, 0.04, 0.10, 0.10, 0.04, 0.04, 0.1…
+## $ share_non_white   &lt;dbl&gt; 0.35, 0.35, 0.42, 0.42, 0.49, 0.49, 0.26, 0.26, 0.6…
+## $ share_vote_trump  &lt;dbl&gt; 0.63, 0.63, 0.53, 0.53, 0.50, 0.50, 0.60, 0.60, 0.3…
+## $ name              &lt;chr&gt; &quot;hate_crimes_per_100k_splc&quot;, &quot;avg_hatecrimes_per_10…
+## $ value             &lt;dbl&gt; 0.12583893, 1.80641049, 0.14374012, 1.65670011, 0.2…</code></pre>
+<pre class="r"><code># going back to original
+untidy &lt;- tidy %&gt;% pivot_wider(names_from = &quot;name&quot;, values_from = &quot;value&quot;)
+glimpse(untidy)</code></pre>
+<pre><code>## Rows: 51
+## Columns: 8
+## $ state                       &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arizona&quot;, &quot;Arkansas…
+## $ median_house_inc            &lt;int&gt; 42278, 67629, 49254, 44922, 60487, 60940,…
+## $ share_unemp_seas            &lt;dbl&gt; 0.060, 0.064, 0.063, 0.052, 0.059, 0.040,…
+## $ share_non_citizen           &lt;dbl&gt; 0.02, 0.04, 0.10, 0.04, 0.13, 0.06, 0.06,…
+## $ share_non_white             &lt;dbl&gt; 0.35, 0.42, 0.49, 0.26, 0.61, 0.31, 0.30,…
+## $ share_vote_trump            &lt;dbl&gt; 0.63, 0.53, 0.50, 0.60, 0.33, 0.44, 0.41,…
+## $ hate_crimes_per_100k_splc   &lt;dbl&gt; 0.12583893, 0.14374012, 0.22531995, 0.069…
+## $ avg_hatecrimes_per_100k_fbi &lt;dbl&gt; 1.8064105, 1.6567001, 3.4139280, 0.869208…</code></pre>
+</div>
+</div>
+<div id="joining" class="section level2">
+<h2>Joining</h2>
+<div id="i-used-full_join-to-join-the-two-datasets-because-i-wanted-to-keep-all-of-the-variables-from-both-datasets.-i-joined-the-two-datasets-by-state-and-no-cases-were-dropped." class="section level5">
+<h5>I used <code>full_join</code> to join the two datasets because I wanted to keep all of the variables from both datasets. I joined the two datasets by <code>state</code>, and no cases were dropped.</h5>
+<pre class="r"><code>fulldata &lt;- crime %&gt;% full_join(education, by = c(state = &quot;State&quot;))
+glimpse(fulldata)</code></pre>
+<pre><code>## Rows: 53
+## Columns: 10
+## $ state                       &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arizona&quot;, &quot;Arkansas…
+## $ median_house_inc            &lt;int&gt; 42278, 67629, 49254, 44922, 60487, 60940,…
+## $ share_unemp_seas            &lt;dbl&gt; 0.060, 0.064, 0.063, 0.052, 0.059, 0.040,…
+## $ share_non_citizen           &lt;dbl&gt; 0.02, 0.04, 0.10, 0.04, 0.13, 0.06, 0.06,…
+## $ share_non_white             &lt;dbl&gt; 0.35, 0.42, 0.49, 0.26, 0.61, 0.31, 0.30,…
+## $ share_vote_trump            &lt;dbl&gt; 0.63, 0.53, 0.50, 0.60, 0.33, 0.44, 0.41,…
+## $ hate_crimes_per_100k_splc   &lt;dbl&gt; 0.12583893, 0.14374012, 0.22531995, 0.069…
+## $ avg_hatecrimes_per_100k_fbi &lt;dbl&gt; 1.8064105, 1.6567001, 3.4139280, 0.869208…
+## $ PercentHighSchoolOrHigher   &lt;dbl&gt; 85.8, 92.7, 86.8, 86.2, 82.9, 91.4, 90.5,…
+## $ PercentBachelorsOrHigher    &lt;dbl&gt; 24.9, 29.2, 28.9, 22.6, 33.3, 40.1, 38.9,…</code></pre>
+</div>
+</div>
+<div id="wrangling" class="section level2">
+<h2>Wrangling</h2>
+<div id="i-began-by-using-filter-to-only-see-the-data-gathered-from-the-state-i-live-in.-instead-of-seeing-the-average-hate-crime-rate-gathered-from-two-different-places-i-averaged-out-the-two-values-using-mutate-and-made-a-new-dataset-to-include-that-value-instead.-i-removed-the-original-two-hate-crime-rate-variables-using-select.-i-then-used-the-arrange-function-to-sort-my-data-from-highest-to-lowest-percentage-of-individuals-who-had-at-least-a-bachelors-degree-and-used-that-to-see-if-as-the-percentage-decreased-so-did-the-median-household-income-per-state.-i-saw-that-it-did-not-seem-to-follow-that-same-pattern.-i-then-decided-to-narrow-down-my-dataset-to-show-less-variables-since-there-were-only-certain-variables-i-wanted-to-use-for-my-graphs." class="section level5">
+<h5>I began by using <code>filter</code> to only see the data gathered from the state I live in. Instead of seeing the average hate crime rate gathered from two different places, I averaged out the two values using <code>mutate</code> and made a new dataset to include that value instead. I removed the original two hate crime rate variables using <code>select</code>. I then used the <code>arrange</code> function to sort my data from highest to lowest percentage of individuals who had at least a bachelors degree, and used that to see if as the percentage decreased so did the median household income per state. I saw that it did not seem to follow that same pattern. I then decided to narrow down my dataset to show less variables, since there were only certain variables I wanted to use for my graphs.</h5>
+</div>
+<div id="i-used-summary-to-get-a-summary-of-the-statistics-for-my-dataset.-i-also-created-a-correlation-matrix-using-cor.-i-used-quantile-to-get-the-cutoff-values-for-average_hate_crime-to-be-in-either-the-highest-or-lowest-50.-i-then-created-new-categorial-variables-that-labeled-the-states-as-either-high-or-low-based-on-the-value-gathered-from-quantile.-i-used-this-new-variable-to-group_by-a-low-hate-crime-rate-to-see-if-they-had-a-lower-share-of-the-population-that-voted-for-trump.-it-showed-that-those-in-the-lower-50-for-hate-crime-rates-actually-had-a-higher-percentage-of-the-population-vote-for-trump.-i-then-grouped-by-having-a-higher-hate-crime-rate-and-evaluated-their-relationship-with-education-level.-i-found-that-those-with-a-higher-hate-crime-rate-also-had-a-higher-education-level-on-average.-both-of-these-were-actually-opposite-of-what-i-had-originally-expected.-i-then-redid-my-summary-statistics-after-grouping-for-those-with-a-low-hate-crime-rate." class="section level5">
+<h5>I used <code>summary()</code> to get a summary of the statistics for my dataset. I also created a correlation matrix using <code>cor()</code>. I used <code>quantile</code> to get the cutoff values for <code>average_hate_crime</code> to be in either the highest or lowest 50%. I then created new categorial variables that labeled the states as either &quot;high&quot; or &quot;low&quot; based on the value gathered from <code>quantile</code>. I used this new variable to <code>group_by</code> a low hate crime rate to see if they had a lower share of the population that voted for Trump. It showed that those in the lower 50% for hate crime rates actually had a higher percentage of the population vote for Trump. I then grouped by having a higher hate crime rate and evaluated their relationship with education level. I found that those with a higher hate crime rate also had a higher education level, on average. Both of these were actually opposite of what I had originally expected. I then redid my summary statistics after grouping for those with a low hate crime rate.</h5>
+<pre class="r"><code># filter to see data just from Texas
+fulldata %&gt;% filter(state == &quot;Texas&quot;)</code></pre>
+<pre><code>##   state median_house_inc share_unemp_seas share_non_citizen share_non_white
+## 1 Texas            53875            0.042              0.11            0.56
+##   share_vote_trump hate_crimes_per_100k_splc avg_hatecrimes_per_100k_fbi
+## 1             0.53                 0.2135839                   0.7527683
+##   PercentHighSchoolOrHigher PercentBachelorsOrHigher
+## 1                      83.2                     29.3</code></pre>
+<pre class="r"><code># get an average hate crime rate from both sources
+mutate &lt;- fulldata %&gt;% mutate(average_hate_crime = ((hate_crimes_per_100k_splc + 
+    avg_hatecrimes_per_100k_fbi)/2)) %&gt;% select(-hate_crimes_per_100k_splc, 
+    -avg_hatecrimes_per_100k_fbi)
+glimpse(mutate)</code></pre>
+<pre><code>## Rows: 53
+## Columns: 9
+## $ state                     &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arizona&quot;, &quot;Arkansas&quot;,…
+## $ median_house_inc          &lt;int&gt; 42278, 67629, 49254, 44922, 60487, 60940, 7…
+## $ share_unemp_seas          &lt;dbl&gt; 0.060, 0.064, 0.063, 0.052, 0.059, 0.040, 0…
+## $ share_non_citizen         &lt;dbl&gt; 0.02, 0.04, 0.10, 0.04, 0.13, 0.06, 0.06, 0…
+## $ share_non_white           &lt;dbl&gt; 0.35, 0.42, 0.49, 0.26, 0.61, 0.31, 0.30, 0…
+## $ share_vote_trump          &lt;dbl&gt; 0.63, 0.53, 0.50, 0.60, 0.33, 0.44, 0.41, 0…
+## $ PercentHighSchoolOrHigher &lt;dbl&gt; 85.8, 92.7, 86.8, 86.2, 82.9, 91.4, 90.5, 8…
+## $ PercentBachelorsOrHigher  &lt;dbl&gt; 24.9, 29.2, 28.9, 22.6, 33.3, 40.1, 38.9, 3…
+## $ average_hate_crime        &lt;dbl&gt; 0.9661247, 0.9002201, 1.8196240, 0.4691348,…</code></pre>
+<pre class="r"><code># does the state with the highest education level also have
+# the highest median household income?
+mutate %&gt;% select(state, PercentBachelorsOrHigher, median_house_inc) %&gt;% 
+    group_by(state) %&gt;% arrange(desc(PercentBachelorsOrHigher))</code></pre>
+<pre><code>## # A tibble: 53 x 3
+## # Groups:   state [53]
+##    state         PercentBachelorsOrHigher median_house_inc
+##    &lt;chr&gt;                            &lt;dbl&gt;            &lt;int&gt;
+##  1 Washington DC                     57.6               NA
+##  2 Massachusetts                     42.9            63151
+##  3 Colorado                          40.1            60940
+##  4 Maryland                          39.6            76165
+##  5 Connecticut                       38.9            70161
+##  6 New Jersey                        38.9            65243
+##  7 Virginia                          38.2            66155
+##  8 Vermont                           37.3            60708
+##  9 New Hampshire                     36.5            73397
+## 10 New York                          35.9            54310
+## # … with 43 more rows</code></pre>
+<pre class="r"><code># selected data I am most interested in using for my graphs
+data &lt;- mutate %&gt;% select(state, median_house_inc, average_hate_crime, 
+    PercentBachelorsOrHigher, PercentHighSchoolOrHigher, share_vote_trump) %&gt;% 
+    na.omit()
+glimpse(data)</code></pre>
+<pre><code>## Rows: 46
+## Columns: 6
+## $ state                     &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arizona&quot;, &quot;Arkansas&quot;,…
+## $ median_house_inc          &lt;int&gt; 42278, 67629, 49254, 44922, 60487, 60940, 7…
+## $ average_hate_crime        &lt;dbl&gt; 0.9661247, 0.9002201, 1.8196240, 0.4691348,…
+## $ PercentBachelorsOrHigher  &lt;dbl&gt; 24.9, 29.2, 28.9, 22.6, 33.3, 40.1, 38.9, 3…
+## $ PercentHighSchoolOrHigher &lt;dbl&gt; 85.8, 92.7, 86.8, 86.2, 82.9, 91.4, 90.5, 8…
+## $ share_vote_trump          &lt;dbl&gt; 0.63, 0.53, 0.50, 0.60, 0.33, 0.44, 0.41, 0…</code></pre>
+<pre class="r"><code># summary statistics
+data %&gt;% select(-state) %&gt;% summary()</code></pre>
+<pre><code>##  median_house_inc average_hate_crime PercentBachelorsOrHigher
+##  Min.   :35521    Min.   :0.2662     Min.   :20.30           
+##  1st Qu.:47414    1st Qu.:0.7324     1st Qu.:27.18           
+##  Median :54092    Median :1.1021     Median :30.60           
+##  Mean   :54509    Mean   :1.2162     Mean   :30.76           
+##  3rd Qu.:60132    3rd Qu.:1.7037     3rd Qu.:33.90           
+##  Max.   :76165    Max.   :2.7164     Max.   :42.90           
+##  PercentHighSchoolOrHigher share_vote_trump
+##  Min.   :82.90             Min.   :0.3300  
+##  1st Qu.:86.72             1st Qu.:0.4200  
+##  Median :89.55             Median :0.4900  
+##  Mean   :88.94             Mean   :0.4933  
+##  3rd Qu.:91.00             3rd Qu.:0.5700  
+##  Max.   :93.20             Max.   :0.6900</code></pre>
+<pre class="r"><code># correlation matrix
+data %&gt;% select_if(is.numeric) %&gt;% cor(use = &quot;pair&quot;)</code></pre>
+<pre><code>##                           median_house_inc average_hate_crime
+## median_house_inc                 1.0000000          0.2640951
+## average_hate_crime               0.2640951          1.0000000
+## PercentBachelorsOrHigher         0.8291572          0.4120437
+## PercentHighSchoolOrHigher        0.6154055          0.2825532
+## share_vote_trump                -0.6410854         -0.2753959
+##                           PercentBachelorsOrHigher PercentHighSchoolOrHigher
+## median_house_inc                         0.8291572                 0.6154055
+## average_hate_crime                       0.4120437                 0.2825532
+## PercentBachelorsOrHigher                 1.0000000                 0.5015839
+## PercentHighSchoolOrHigher                0.5015839                 1.0000000
+## share_vote_trump                        -0.7734820                -0.2232300
+##                           share_vote_trump
+## median_house_inc                -0.6410854
+## average_hate_crime              -0.2753959
+## PercentBachelorsOrHigher        -0.7734820
+## PercentHighSchoolOrHigher       -0.2232300
+## share_vote_trump                 1.0000000</code></pre>
+<pre class="r"><code># what does your crime rate have to be at to be within the
+# top 50%?
+quantile(data$average_hate_crime, 0.5, na.rm = T)</code></pre>
+<pre><code>##      50% 
+## 1.102119</code></pre>
+<pre class="r"><code># create new categories
+newdata &lt;- mutate(data, low = average_hate_crime &lt;= 1.1, high = average_hate_crime &gt; 
+    1.1)
+# do states with low hate crime rates have a lower or higher
+# percentage of people who voted for Trump?
+newdata %&gt;% group_by(low) %&gt;% summarize(mean(share_vote_trump))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   low   `mean(share_vote_trump)`
+##   &lt;lgl&gt;                    &lt;dbl&gt;
+## 1 FALSE                    0.474
+## 2 TRUE                     0.513</code></pre>
+<pre class="r"><code># do states with a high hate crime rates have a lower or
+# higher percentage of people who graduated with a bachelors
+# degree or better?
+newdata %&gt;% group_by(high) %&gt;% summarize(mean(PercentBachelorsOrHigher), 
+    .groups = &quot;drop&quot;)</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   high  `mean(PercentBachelorsOrHigher)`
+##   &lt;lgl&gt;                            &lt;dbl&gt;
+## 1 FALSE                             29.0
+## 2 TRUE                              32.5</code></pre>
+<pre class="r"><code># summary statistics grouped by a low hate crime rate
+newdata %&gt;% select(-state, -high) %&gt;% filter(low == &quot;TRUE&quot;) %&gt;% 
+    group_by(low) %&gt;% summary()</code></pre>
+<pre><code>##  median_house_inc average_hate_crime PercentBachelorsOrHigher
+##  Min.   :35521    Min.   :0.2662     Min.   :21.80           
+##  1st Qu.:46413    1st Qu.:0.4955     1st Qu.:26.40           
+##  Median :53438    Median :0.7255     Median :29.20           
+##  Mean   :52631    Mean   :0.7312     Mean   :29.05           
+##  3rd Qu.:57666    3rd Qu.:0.9842     3rd Qu.:30.75           
+##  Max.   :76165    Max.   :1.0906     Max.   :39.60           
+##  PercentHighSchoolOrHigher share_vote_trump   low         
+##  Min.   :83.20             Min.   :0.3500   Mode:logical  
+##  1st Qu.:86.45             1st Qu.:0.4650   TRUE:23       
+##  Median :88.00             Median :0.5200                 
+##  Mean   :88.17             Mean   :0.5126                 
+##  3rd Qu.:89.90             3rd Qu.:0.5750                 
+##  Max.   :92.70             Max.   :0.6500</code></pre>
+</div>
+</div>
+<div id="visualizing" class="section level2">
+<h2>Visualizing</h2>
+<div id="i-made-a-heatmap-of-the-numerical-values-included-in-data.-a-heatmap-helps-visualize-our-data-in-clusters-of-samples-and-features.-i-started-by-renaming-the-columns-because-they-were-too-long-and-appeared-jumbled-on-the-heatmap.-i-also-changed-the-gradient-to-go-with-the-us-flag-colors-since-my-data-comes-from-each-state.-from-the-heatmap-it-seems-that-college-education-level-and-household-income-have-the-highest-correlation-and-high-school-education-level-and-the-percentage-of-the-population-that-voted-for-trump-have-the-lowest-correlation." class="section level5">
+<h5>I made a heatmap of the numerical values included in <code>data</code>. A heatmap helps visualize our data in clusters of samples and features. I started by renaming the columns because they were too long and appeared jumbled on the heatmap. I also changed the gradient to go with the US flag colors since my data comes from each state. From the heatmap it seems that college education level and household income have the highest correlation, and high school education level and the percentage of the population that voted for Trump have the lowest correlation.</h5>
+<pre class="r"><code>heatmap &lt;- data %&gt;% select(-state)
+colnames(heatmap) &lt;- c(&quot;income&quot;, &quot;hate crimes&quot;, &quot;done college&quot;, 
+    &quot;done HS&quot;, &quot;voted Trump&quot;)
+heatmap %&gt;% select_if(is.numeric) %&gt;% cor() %&gt;% as.data.frame %&gt;% 
+    rownames_to_column %&gt;% pivot_longer(-1) %&gt;% ggplot(aes(rowname, 
+    name, fill = value)) + geom_tile() + geom_text(aes(label = round(value, 
+    2))) + xlab(&quot;&quot;) + ylab(&quot;&quot;) + coord_fixed() + scale_fill_gradient2(low = &quot;red&quot;, 
+    mid = &quot;white&quot;, high = &quot;blue&quot;)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="i-made-a-scatterplot-to-view-the-correlation-between-college-education-level-and-the-percentage-of-the-population-who-voted-for-trump.-each-dot-on-the-graph-represents-a-different-state.-the-graph-shows-a-negative-correlation-between-the-two-and-from-our-heatmap-we-can-see-they-have-a-correlation-of--0.77.-therefore-the-higher-the-percentage-of-individuals-in-each-state-who-have-at-least-a-four-year-college-dregree-the-lower-the-amount-of-individuals-from-each-state-who-voted-for-trump-in-the-2016-election." class="section level4">
+<h4>I made a scatterplot to view the correlation between college education level and the percentage of the population who voted for Trump. Each dot on the graph represents a different state. The graph shows a negative correlation between the two and, from our heatmap, we can see they have a correlation of -0.77. Therefore, the higher the percentage of individuals in each state who have at least a four-year college dregree, the lower the amount of individuals from each state who voted for Trump in the 2016 election.</h4>
+<pre class="r"><code>ggplot(fulldata, aes(PercentBachelorsOrHigher, share_vote_trump)) + 
+    geom_point(aes(color = state)) + geom_smooth(method = &quot;lm&quot;) + 
+    theme(legend.position = &quot;none&quot;) + print(labs(title = &quot;State Voting based on Education&quot;, 
+    y = &quot;Share of Population that Voted for Trump&quot;, x = &quot;Percent of Population that has a College Degree&quot;))</code></pre>
+<pre><code>## $y
+## [1] &quot;Share of Population that Voted for Trump&quot;
+## 
+## $x
+## [1] &quot;Percent of Population that has a College Degree&quot;
+## 
+## $title
+## [1] &quot;State Voting based on Education&quot;
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;labels&quot;</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="for-this-graph-i-wanted-to-use-the-most-and-least-educated-states-based-on-high-school-education-level-and-the-most-and-least-educated-states-based-on-college-education-level.-i-got-these-states-using-max-and-min.-i-then-used-a-bar-graph-to-compare-the-median-household-incomes-of-those-states.-massachusetts-had-the-highest-education-level-overall-and-also-had-the-highest-median-household-income-of-these-states.-however-california-was-the-lowest-educated-state-overall-and-was-nowehere-near-having-the-lowest-median-household-income.-we-see-from-our-heatmap-that-household-income-and-college-education-do-have-a-positive-correlation-of-0.83-and-household-income-and-high-school-education-also-have-a-positive-correlation-of-0.62." class="section level5">
+<h5>For this graph I wanted to use the most and least educated states based on high school education level, and the most and least educated states based on college education level. I got these states using <code>max</code> and <code>min</code>. I then used a bar graph to compare the median household incomes of those states. Massachusetts had the highest education level overall and also had the highest median household income of these states. However, California was the lowest educated state overall and was nowehere near having the lowest median household income. We see from our heatmap that household income and college education do have a positive correlation of 0.83, and household income and high school education also have a positive correlation of 0.62.</h5>
+<pre class="r"><code># most educated state based on college education level
+max(fulldata$PercentBachelorsOrHigher, na.rm = T)  #Massachusetts</code></pre>
+<pre><code>## [1] 57.6</code></pre>
+<pre class="r"><code># least educated state based on college education level
+min(fulldata$PercentBachelorsOrHigher, na.rm = T)  #WestVirgnia</code></pre>
+<pre><code>## [1] 20.3</code></pre>
+<pre class="r"><code># most educated state based on high school education level
+max(fulldata$PercentHighSchoolOrHigher, na.rm = T)  #Montana</code></pre>
+<pre><code>## [1] 93.2</code></pre>
+<pre class="r"><code># least educated state based on high school education level
+min(fulldata$PercentHighSchoolOrHigher, na.rm = T)  #California</code></pre>
+<pre><code>## [1] 75.5</code></pre>
+<pre class="r"><code>target &lt;- c(&quot;Massachusetts&quot;, &quot;Montana&quot;, &quot;West Virginia&quot;, &quot;California&quot;)
+bargraph &lt;- filter(data, state %in% target)
+ggplot(bargraph, aes(x = state, y = median_house_inc)) + geom_bar(aes(fill = state), 
+    stat = &quot;summary&quot;) + geom_errorbar(stat = &quot;summary&quot;, width = 0.5) + 
+    print(labs(title = &quot;Median Houshold Income of Least &amp; Most Educated States&quot;, 
+        y = &quot;Median Household Income&quot;, x = &quot;State&quot;))</code></pre>
+<pre><code>## $y
+## [1] &quot;Median Household Income&quot;
+## 
+## $x
+## [1] &quot;State&quot;
+## 
+## $title
+## [1] &quot;Median Houshold Income of Least &amp; Most Educated States&quot;
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;labels&quot;</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="dimensionality-reduction" class="section level2">
+<h2>Dimensionality Reduction</h2>
+<div id="to-begin-my-cluster-analysispam-i-started-by-choosing-my-number-of-clusters-using-the-silhouette-method-which-gave-me-a-cluster-number-of-2.-i-then-processed-my-numeric-variables-by-using-scale.-i-then-used-pam-to-run-my-cluster-analysis-and-visualized-the-pairwise-combinations-of-all-my-variables.-i-also-created-a-3d-visualization-of-the-variables-average_hate_crime-percentbachelorsorhigher-and-share_vote_trump.-i-then-confirmed-and-interpreted-the-average-silhouette-width-with-silinfoavg.width.-my-average-silhoutte-width-was-0.32-which-gives-an-interpretation-that-the-structure-of-my-data-is-weak-and-could-be-artifical-however-this-seems-to-be-the-highest-average-silhouette-width-for-my-data." class="section level5">
+<h5>To begin my cluster analysis/PAM I started by choosing my number of clusters using the silhouette method, which gave me a cluster number of 2. I then processed my numeric variables by using <code>scale</code>. I then used PAM to run my cluster analysis and visualized the pairwise combinations of all my variables. I also created a 3D visualization of the variables <code>average_hate_crime</code>, <code>PercentBachelorsOrHigher</code>, and <code>share_vote_trump</code>. I then confirmed and interpreted the average silhouette width with <code>silinfo$avg.width</code>. My average silhoutte width was 0.32, which gives an interpretation that the structure of my data is weak and could be artifical; however, this seems to be the highest average silhouette width for my data.</h5>
+<pre class="r"><code>library(cluster)
+# choose numeric data
+pam &lt;- data %&gt;% select(-state)
+# silhouette method
+sil_width &lt;- vector()
+for (i in 2:10) {
+    pam_fit &lt;- pam(pam, diss = TRUE, k = i)
+    sil_width[i] &lt;- pam_fit$silinfo$avg.width
+}
+ggplot() + geom_line(aes(x = 1:10, y = sil_width)) + scale_x_continuous(name = &quot;k&quot;, 
+    breaks = 1:10)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># process data
+PAM &lt;- pam %&gt;% scale %&gt;% pam(2)
+# clustering
+pamclust &lt;- pam %&gt;% mutate(cluster = as.factor(PAM$clustering), 
+    na.rm = T)
+# cluster analysis
+pamclust %&gt;% group_by(cluster) %&gt;% summarize_if(is.numeric, mean, 
+    na.rm = T)</code></pre>
+<pre><code>## # A tibble: 2 x 6
+##   cluster median_house_inc average_hate_cr… PercentBachelor… PercentHighScho…
+##   &lt;fct&gt;              &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1 1                 47321.             1.02             26.6             86.7
+## 2 2                 60548.             1.38             34.3             90.8
+## # … with 1 more variable: share_vote_trump &lt;dbl&gt;</code></pre>
+<pre class="r"><code># visualization
+library(GGally)
+ggpairs(pamclust, columns = 1:5, aes(color = cluster))</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># 3D graph
+library(plotly)
+pamclust &lt;- pamclust %&gt;% select(average_hate_crime, PercentBachelorsOrHigher, 
+    share_vote_trump, cluster)
+colnames(pamclust) &lt;- c(&quot;HateCrime&quot;, &quot;CollegeEducation&quot;, &quot;VotedTrump&quot;, 
+    &quot;cluster&quot;)
+pamclust %&gt;% plot_ly(x = ~HateCrime, y = ~CollegeEducation, z = ~VotedTrump, 
+    color = ~cluster, type = &quot;scatter3d&quot;, mode = &quot;markers&quot;) %&gt;% 
+    layout(autosize = F, width = 900, height = 400)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"visdat":{"efe326e86697":["function () ","plotlyVisDat"]},"cur_data":"efe326e86697","attrs":{"efe326e86697":{"x":{},"y":{},"z":{},"mode":"markers","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"width":900,"height":400,"margin":{"b":40,"l":60,"t":25,"r":10},"autosize":false,"scene":{"xaxis":{"title":"HateCrime"},"yaxis":{"title":"CollegeEducation"},"zaxis":{"title":"VotedTrump"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[0.9661247075,1.819623974,0.4691348225,1.32689563,0.4427957825,0.2662160455,1.007769351,1.002182722,2.266143295,0.725451451,0.345096395,1.0467392495,1.127831657,1.0906232525,0.753343192,1.715567184,0.6076506245,1.073488628,1.667994815,0.4831761215,1.182865353],"y":[24.9,28.9,22.6,33.3,29.2,30.7,26.9,25.9,23.6,23.7,21.8,28.6,24.2,27.1,30.5,27.8,25.2,27.4,26.6,29.3,20.3],"z":[0.63,0.5,0.6,0.33,0.49,0.51,0.59,0.57,0.63,0.58,0.58,0.57,0.46,0.4,0.51,0.52,0.65,0.55,0.61,0.53,0.69],"mode":"markers","type":"scatter3d","name":"1","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[0.9002201135,1.597606033,2.054046869,0.896366866,0.6196801735,0.507911493,1.1245695715,1.6210924735,0.847639254,2.7163549655,1.8021108205,2.119945873,1.725225205,1.4228690265,1.12876909,2.2457542495,1.726392365,2.1138678605,0.358014341,0.6889867375,1.2603058885,1.1136152495,1.044001741,2.247613973,0.674070878],"y":[29.2,40.1,38.9,31.4,34.1,28.2,32.9,30.9,39.6,42.9,28.6,35.4,31.2,31.3,36.5,38.9,35.9,32.9,30.8,33.3,33.3,37.3,38.2,35.3,29.5],"z":[0.53,0.44,0.41,0.42,0.39,0.52,0.57,0.45,0.35,0.34,0.48,0.45,0.57,0.6,0.47,0.42,0.37,0.41,0.49,0.4,0.47,0.33,0.45,0.38,0.48],"mode":"markers","type":"scatter3d","name":"2","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code># interpret
+PAM$silinfo$avg.width</code></pre>
+<pre><code>## [1] 0.3152613</code></pre>
+<pre class="r"><code>plot(PAM, which = 2)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-9-4.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

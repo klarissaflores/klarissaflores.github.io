@@ -1,0 +1,272 @@
+---
+title: "Can you Predict Whether you will get Accepted into Medical School?"
+author: "SDS348 - Fall 2020"
+date: "2020-11-25"
+output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE,fig.align="center",warning=FALSE,message=FALSE,fig.width=8, fig.height=5, linewidth=60)
+options(tibble.width = 100,width = 100)
+library(tidyverse)
+```
+
+## Klarissa Flores (kmf2747)
+
+##### The dataset 'MedGPA' gives information regarding 55 medical school applicants. The variables include whether they were accepted or denied, the sex of the applicant, their BCPM GPA (which is their grade point average in the subjects of biology, chemistry, physics, and math), their overall college GPA, their subscores in areas of verbal reasoning, physical science, writing, and biological sciences (I didn't care much about these subscore variables), their MCAT score, and the number of applications they sent out to medical schools.
+
+```{R}
+MedGPA = read.csv("MedGPA.csv")
+head(MedGPA)
+```
+
+## MANOVA
+
+##### MANOVA assumptions were tested such as multivariate normalities of DVs, and since that did give us a p-value < .05 I did not test homogeneity of covariance matrices. I then performed a MANOVA to determine whether BCPM, GPA, MCAT score, and number of applications sent in differ by whether or not you get accepted into medical school. The overall MANOVA gave a p-value of < .05; therefore, it was significant and a follow-up ANOVA was performed. This showed that all variables besides number of applications were significant, and then a univariate ANOVA and t-tests were performed. To calculate the probability of a type I error I took 0.05 divided by the number of tests performed (1 MANOVA, 2 ANOVAs, and 3 t-tests) and got a probability of 0.01. Follow-up t-tests were then conducted using the bonferonni correction. In conclusion, we find that BCPM, GPA, and MCAT score all differed significantly by whether or not you got accepted.
+
+```{R}
+library(rstatix)
+group <- MedGPA$Accept 
+DVs <- MedGPA %>% select(BCPM,GPA,MCAT,Apps)
+#test multivariate normality for each group (null: assumption met)
+sapply(split(DVs,group), mshapiro_test)
+
+#if any p < .05, stop. If not, test homogeneity of covariance matrices.
+#view covariance matrices for each group
+lapply(split(DVs,group), cov)
+
+man <- manova(cbind(BCPM,GPA,MCAT,Apps)~Accept, data=MedGPA)
+summary(man)
+summary.aov(man)
+MedGPA %>% group_by(Accept) %>% summarize(mean(BCPM), mean(GPA), mean(MCAT))
+pairwise.t.test(MedGPA$BCPM, MedGPA$Accept, p.adj="none")
+pairwise.t.test(MedGPA$GPA, MedGPA$Accept, p.adj="none")
+pairwise.t.test(MedGPA$MCAT, MedGPA$Accept, p.adj="none")
+
+#did 1 MANOVA, 2 ANOVAs, and t-tests(6 tests).
+.05/5
+pairwise.t.test(MedGPA$BCPM, MedGPA$Accept, p.adj="bonferroni")
+pairwise.t.test(MedGPA$GPA, MedGPA$Accept, p.adj="bonferroni")
+pairwise.t.test(MedGPA$MCAT, MedGPA$Accept, p.adj="bonferroni")
+```
+
+## Randomization Test
+
+##### A randomization test for the difference in mean MCAT scores based on acceptance was done. The null hypothesis is that mean MCAT score is the same for applicants that were accepted and denied. The alternative hypothesis is that mean MCAT score is different for applicants that were accepted and denied. After running the test a p-value < 0.05 was obtained, meaning we can successfully reject our null hypothesis. This confirmed that mean MCAT score does differ significantly between applicants that were accepted and denied.   
+
+```{R}
+MedGPA %>% group_by(Accept) %>% summarize(meanMCAT = mean(MCAT))
+MedGPA %>% group_by(Accept) %>% summarize(m = mean(MCAT)) %>% summarize(diff(m))
+rand <- vector()
+
+for (i in 1:5000) { 
+  samp <- data.frame(MCAT = sample(MedGPA$MCAT), accept = MedGPA$Accept)
+  rand[i] <- mean(samp[samp$accept == "A",]$MCAT) - mean(samp[samp$accept == "D",]$MCAT)
+}
+mean(rand < -3.95 | rand > 3.95)
+
+{hist(rand, main = "", ylab = ""); abline(v = c(-3.95, 3.95), col = "red")}
+
+t.test(data=MedGPA, MCAT~Accept)
+```
+
+## Linear Regression
+
+##### A linear regression was performed to predict MCAT score from GPA and BCPM (which were both mean centered). Based on the coefficiant estimates, GPA had a positive effect on MCAT score while BCPM had a negative effect. The interaction, however, between GPA and BCPM had a positive effect on MCAT score. After plotting the regression between MCAT score and a mean centered GPA, we can assume linearity, normality, and homoskedasticity is met. After recomputing regression results with robust standard errors I noticed the coefficiant estimates did not change. Taking SS regression over SS total, I found this model explains 0.293 (or 29.3%) of the variation in the outcome.
+
+```{R}
+library(sandwich)
+library(lmtest)
+MedGPA$GPA_c <- MedGPA$GPA - mean(MedGPA$GPA)
+MedGPA$BCPM_c <- MedGPA$BCPM - mean(MedGPA$BCPM)
+linfit <- lm(MCAT ~ GPA_c*BCPM_c, data=MedGPA)
+summary(linfit)
+coef(linfit)
+
+MedGPA %>% ggplot(aes(GPA_c,MCAT)) + geom_point() + geom_smooth(method="lm", se=F)
+
+coeftest(linfit, vcov=vcovHC(linfit))[,1:2]
+
+SST <- sum((MedGPA$MCAT-mean(MedGPA$MCAT))^2) #SS Total
+SSR <- sum((linfit$fitted.values-mean(MedGPA$MCAT))^2) #SS Regression
+SSE <- sum(linfit$residuals^2) #SS Error
+SSR/SST # proportion of variance explained
+```
+
+## Bootstrapped Standard Errors
+
+##### Bootstrapped standard errors were computed after resampling for residuals. Compared to the original and robust SEs (which were the same), the SE for GPA is lower, but the SEs for BCPM and the interaction became higher.
+
+```{R}
+resids <- linfit$residuals #save residuals
+fitted <- linfit$fitted.values #save yhats/predictions
+
+resid_resamp <- replicate(5000,{
+  new_resids <- sample(resids, replace=TRUE) 
+  MedGPA$new_y <- fitted+new_resids 
+  fit <- lm(new_y~GPA_c*BCPM_c, data=MedGPA) 
+  coef(fit) 
+}) 
+
+## Estimated SEs
+resid_resamp %>% t %>% as.data.frame %>% summarize_all(sd)
+
+## Empirical 95% CI
+resid_resamp %>% t %>% as.data.frame %>% pivot_longer(1:3) %>% group_by(name) %>%
+  summarize(lower=quantile(value,.025), upper=quantile(value,.975)) 
+```
+
+## Logistic Regression
+
+##### This logistic regression model predicts acceptance from number of applications and MCAT score (without the interaction). Based on the coefficiant estimates, the number of applications you send in and your MCAT score both have a positive effect on whether or not you get accepted into medical school. However, based on p-values, this relationship is not significant for the number of applications (p = 0.97), but is significant for MCAT score (p = 0.006). A confusion matrix was generated, and from that accuracy (0.636), sensitivity (TPR = 0.667), specificity (TNR = 0.6), precision (PPV = 0.6), and AUC (0.74) were generated. A density plot and ROC curve were generated. From the ROC plot we also got an AUC of 0.74, this AUC value is fair, meaning it's quite hard to predict acceptance from just MCAT score and number of applications.
+
+```{R}
+fit <- glm(Acceptance ~ Apps + MCAT, data = MedGPA, family = "binomial")
+summary(fit)
+coeftest(fit)
+probs <- predict(fit,type="response")
+MedGPA$probs <- predict(fit,type="response")
+table(predict=as.numeric(probs>.5), truth=MedGPA$Acceptance) %>% addmargins
+#accuracy
+(15+20)/55
+#sensitivity (TPR)
+mean(MedGPA[MedGPA$Acceptance==1,]$probs>.5) #proportion of y=1 where prob is >.5
+20/30
+#specificity (TNR)
+mean(MedGPA[MedGPA$Acceptance==0,]$probs<.5) #proportion of y=0 where prob is <.5
+15/25
+#precision
+15/25
+#AUC
+auc <- replicate(5000,{
+  rand_pos <- sample(MedGPA[MedGPA$Acceptance==1,]$probs)
+  rand_neg <- sample(MedGPA[MedGPA$Acceptance==0,]$probs)
+  case_when(rand_pos > rand_neg ~ 1, rand_pos == rand_neg ~ .5, rand_pos < rand_neg ~0)
+})
+mean(auc)
+
+MedGPA$logit <- predict(fit,type="link")
+MedGPA %>% mutate(Acceptance=factor(Acceptance,levels=c("1","0"))) %>% 
+  ggplot(aes(logit, fill=Acceptance)) + geom_density(alpha=.3) +
+  geom_vline(xintercept=0,lty=2)
+
+library(plotROC) 
+ROCplot <- ggplot(MedGPA) + geom_roc(aes(d=Acceptance,m=probs), n.cuts=0) 
+ROCplot
+calc_auc(ROCplot)
+```
+
+## LASSO
+
+##### I began by removing the writing subscore variable because it included an NA, and the "Accept" varible since it was the categorical version of my binary variable. From the in-sample classification diagnostics, I got an accuracy of 0.89, sensitivity of 0.9, specificity of 0.88, precision of 0.9, and an AUC of 0.95 (which is great). After performing a 10-fold CV every diagnostic variable decreased (they went from ~0.9 to ~0.7). The AUC went from 0.95 (great) to 0.85 (good), so either way the variables in my dataset are pretty good at predicting acceptance. After performing a LASSO, only the variables of male sex, GPA, and the subscores in physical and biological sciences were retained. After performing a 10-fold CV using only these retained varibles, I again got an AUC of 0.85. Compared to my in-sample AUC of 0.95, this is a little lower, but these retained variables are still good at predicting acceptance.
+
+```{R}
+MedGPA = read.csv("MedGPA.csv")
+MedGPA <- MedGPA %>% select(-c(WS,Accept, X))
+
+#in-sample classification diagnostics 
+logfit <- glm(Acceptance~., data = MedGPA, family = "binomial")
+prob <- predict(logfit, type = "response")
+
+class_diag <- function(prob,truth) {
+  
+  tab <- table(factor(prob > 0.5, levels = c("FALSE", "TRUE")), 
+               truth)
+  acc = sum(diag(tab))/sum(tab)
+  sens = tab[2, 2]/colSums(tab)[2]
+  spec = tab[1, 1]/colSums(tab)[1]
+  ppv = tab[2, 2]/rowSums(tab)[2]
+  
+  if (is.numeric(truth) == FALSE & is.logical(truth) == FALSE) 
+    truth <- as.numeric(truth) - 1
+  
+  ord <- order(prob, decreasing = TRUE)
+  prob <- prob[ord]
+  truth <- truth[ord]
+  
+  TPR = cumsum(truth)/max(1, sum(truth))
+  FPR = cumsum(!truth)/max(1, sum(!truth))
+  
+  dup <- c(prob[-1] >= prob[-length(prob)], FALSE)
+  TPR <- c(0, TPR[!dup], 1)
+  FPR <- c(0, FPR[!dup], 1)
+  
+  n <- length(TPR)
+  auc <- sum(((TPR[-1] + TPR[-n])/2) * (FPR[-1] - FPR[-n]))
+  
+  data.frame(acc, sens, spec, ppv, auc)
+}
+class_diag(prob, MedGPA$Acceptance)
+
+#10-fold CV
+set.seed(1234)
+k = 10
+
+data <- MedGPA[sample(nrow(MedGPA)),]
+folds <- cut(seq(1:nrow(MedGPA)), breaks = k, labels = F)
+
+diags <- NULL
+for (i in 1:k) {
+  train <- data[folds != i, ]
+  test <- data[folds == i, ]
+  truth <- test$Acceptance
+  
+  fitted <- glm(Acceptance~., data = train, family = "binomial")
+  probz <- predict(fitted, newdata = test, type = "response")
+  
+  diags <- rbind(diags, class_diag(probz, truth))
+}
+
+summarize_all(diags, mean)
+
+#LASSO
+library(glmnet)
+set.seed(1234)
+med_preds <- model.matrix(Acceptance ~ ., data = MedGPA)[, -1]  #predictors (drop intercept)
+med_resp <- as.matrix(MedGPA$Acceptance)  #grab response
+
+cv <- cv.glmnet(med_preds, med_resp, family = "binomial")
+lasso_fit <- glmnet(med_preds, med_resp, family = "binomial", lambda = cv$lambda.1se)
+coef(lasso_fit)
+
+#LASSO 10-fold CV
+set.seed(1234)
+k = 10
+
+med <- MedGPA %>% mutate(SexM = ifelse(MedGPA$Sex == "M", 1, 0))
+
+data <- med[sample(nrow(med)),]
+folds <- cut(seq(1:nrow(med)), breaks = k, labels = F)
+
+diags <- NULL
+for (i in 1:k) {
+  train <- data[folds != i,]
+  test <- data[folds == i,]
+  truth <- test$Acceptance
+  
+  fits <- glm(Acceptance ~ SexM + GPA + PS, BS, data = train, family = "binomial")
+  proba <- predict(fits, newdata = test, type = "response")
+  
+  diags <- rbind(diags, class_diag(proba, truth))
+}
+
+diags %>% summarize_all(mean)
+```

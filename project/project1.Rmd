@@ -1,0 +1,170 @@
+---
+title: "What You Can Tell About a State from Their Level of Education"
+author: "SDS348 - Fall 2020"
+date: "2020-10-18"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", warning = F, message = F,
+tidy=TRUE, tidy.opts=list(width.cutoff=60), R.options=list(max.print=100))
+```
+
+## Klarissa Flores (kmf2747)
+
+```{R}
+library(dplyr)
+library(tidyverse)
+```
+
+## Data
+
+##### The dataset `crime` contains information about how hate crimes may be tied to income inequality in the US. It is part of the `fivethirtyeight` package on R. It includes data about median household income, the average number of hate crimes recorded by the FBI and the Southern Poverty Law Center, the share of the population that voted for Trump, and more. The `education` dataset contains the percentage of individuals from each state that have graduated high school and the percentage of individuals from each state that have at least a four-year college degree. This dataset was acquired from the website https://worldpopulationreview.com/state-rankings/educational-attainment-by-state. I chose these two datasets because I thought it would be interesting to see if education level had an influence on different variables from the `crime` dataset. I expected a negative correlation between education level and the percentage of individuals who voted for Donald Trump, and a positive correlation between education level and median household income per state.
+
+```{R}
+hate_crimes <- fivethirtyeight::hate_crimes
+crime <- as.data.frame(hate_crimes)
+glimpse(crime)
+education = read.csv("education.csv")
+glimpse(education)
+```
+
+## Tidying 
+
+##### I felt like both of my original datasets were tidy enough already. I did, however, want to take out data from the `crime` dataset because it had many variables that I either wasn't interested in, or was taken outside of 2016, and I felt it was important to make sure all the data in that set was taken in the same year. I tried using `pivot_longer` to see if there was a way I could better tidy my data but I, personally, preferred the original dataset, so I undid that with `pivot_wider`. 
+
+```{R}
+#removing variables
+crime <- crime %>% select(-share_pop_metro,-share_pop_hs,-share_white_poverty,-gini_index,-state_abbrev)
+#trying to tidy
+tidy <- crime %>% pivot_longer(contains("hate")) 
+glimpse(tidy)
+#going back to original
+untidy <- tidy %>% pivot_wider(names_from="name",values_from="value")
+glimpse(untidy)
+```
+
+## Joining 
+
+##### I used `full_join` to join the two datasets because I wanted to keep all of the variables from both datasets. I joined the two datasets by `state`, and no cases were dropped. 
+
+```{R}
+fulldata <- crime %>% full_join(education, by = c(state="State"))
+glimpse(fulldata)
+```
+
+## Wrangling 
+
+##### I began by using `filter` to only see the data gathered from the state I live in. Instead of seeing the average hate crime rate gathered from two different places, I averaged out the two values using `mutate` and made a new dataset to include that value instead. I removed the original two hate crime rate variables using `select`. I then used the `arrange` function to sort my data from highest to lowest percentage of individuals who had at least a bachelors degree, and used that to see if as the percentage decreased so did the median household income per state. I saw that it did not seem to follow that same pattern. I then decided to narrow down my dataset to show less variables, since there were only certain variables I wanted to use for my graphs. 
+##### I used `summary()` to get a summary of the statistics for my dataset. I also created a correlation matrix using `cor()`. I used `quantile` to get the cutoff values for  `average_hate_crime` to be in either the highest or lowest 50%. I then created new categorial variables that labeled the states as either "high" or "low" based on the value gathered from `quantile`. I used this new variable to `group_by` a low hate crime rate to see if they had a lower share of the population that voted for Trump. It showed that those in the lower 50% for hate crime rates actually had a higher percentage of the population vote for Trump. I then grouped by having a higher hate crime rate and evaluated their relationship with education level. I found that those with a higher hate crime rate also had a higher education level, on average. Both of these were actually opposite of what I had originally expected. I then redid my summary statistics after grouping for those with a low hate crime rate.
+
+```{R}
+#filter to see data just from Texas
+fulldata %>% filter(state=="Texas") 
+#get an average hate crime rate from both sources
+mutate <- fulldata %>% mutate(average_hate_crime = ((hate_crimes_per_100k_splc+avg_hatecrimes_per_100k_fbi)/2)) %>%
+  select(-hate_crimes_per_100k_splc,-avg_hatecrimes_per_100k_fbi)
+glimpse(mutate)
+#does the state with the highest education level also have the highest median household income?
+mutate %>% select(state, PercentBachelorsOrHigher, median_house_inc) %>%
+  group_by(state) %>% arrange(desc(PercentBachelorsOrHigher))
+#selected data I am most interested in using for my graphs
+data <- mutate %>% select(state, median_house_inc, average_hate_crime, PercentBachelorsOrHigher, PercentHighSchoolOrHigher, share_vote_trump) %>% na.omit() 
+glimpse(data)
+
+#summary statistics 
+data %>% select(-state) %>% summary() 
+
+#correlation matrix 
+data %>% select_if(is.numeric) %>% cor(use="pair")
+
+#what does your crime rate have to be at to be within the top 50%?
+quantile(data$average_hate_crime, 0.50, na.rm=T)
+#create new categories
+newdata <- mutate(data, "low"=average_hate_crime<=1.10, "high"=average_hate_crime>1.10)
+#do states with low hate crime rates have a lower or higher percentage of people who voted for Trump?
+newdata %>% group_by(low) %>% summarize(mean(share_vote_trump))
+#do states with a high hate crime rates have a lower or higher percentage of people who graduated with a bachelors degree or better? 
+newdata %>% group_by(high) %>% summarize(mean(PercentBachelorsOrHigher), .groups='drop')
+#summary statistics grouped by a low hate crime rate
+newdata %>% select(-state, -high) %>% filter(low=="TRUE") %>% group_by(low) %>% summary()
+```
+
+## Visualizing
+
+##### I made a heatmap of the numerical values included in `data`. A heatmap helps visualize our data in clusters of samples and features. I started by renaming the columns because they were too long and appeared jumbled on the heatmap. I also changed the gradient to go with the US flag colors since my data comes from each state. From the heatmap it seems that college education level and household income have the highest correlation, and high school education level and the percentage of the population that voted for Trump have the lowest correlation.
+
+```{R}
+heatmap <- data %>% select(-state)
+colnames(heatmap) <- c("income", "hate crimes", "done college", "done HS", "voted Trump") 
+heatmap %>% select_if(is.numeric) %>% cor() %>% as.data.frame %>%
+  rownames_to_column %>% pivot_longer(-1) %>%
+  ggplot(aes(rowname,name,fill=value)) + geom_tile() +
+  geom_text(aes(label=round(value,2))) +
+  xlab("") + ylab("") + coord_fixed() +
+  scale_fill_gradient2(low="red",mid="white",high="blue") 
+```
+
+#### I made a scatterplot to view the correlation between college education level and the percentage of the population who voted for Trump. Each dot on the graph represents a different state. The graph shows a negative correlation between the two and, from our heatmap, we can see they have a correlation of -0.77. Therefore, the higher the percentage of individuals in each state who have at least a four-year college dregree, the lower the amount of individuals from each state who voted for Trump in the 2016 election.  
+```{R}
+ggplot(fulldata, aes(PercentBachelorsOrHigher, share_vote_trump)) + geom_point(aes(color=state)) +
+  geom_smooth(method="lm") + 
+  theme(legend.position="none") + print(labs(title="State Voting based on Education", y="Share of Population that Voted for Trump", x="Percent of Population that has a College Degree"))
+```
+
+##### For this graph I wanted to use the most and least educated states based on high school education level, and the most and least educated states based on college education level. I got these states using `max` and `min`. I then used a bar graph to compare the median household incomes of those states. Massachusetts had the highest education level overall and also had the highest median household income of these states. However, California was the lowest educated state overall and was nowehere near having the lowest median household income. We see from our heatmap that household income and college education do have a positive correlation of 0.83, and household income and high school education also have a positive correlation of 0.62.
+```{R}
+#most educated state based on college education level
+max(fulldata$PercentBachelorsOrHigher, na.rm=T) #Massachusetts
+#least educated state based on college education level
+min(fulldata$PercentBachelorsOrHigher, na.rm=T) #WestVirgnia
+#most educated state based on high school education level
+max(fulldata$PercentHighSchoolOrHigher, na.rm=T) #Montana
+#least educated state based on high school education level
+min(fulldata$PercentHighSchoolOrHigher, na.rm=T) #California
+target <- c("Massachusetts", "Montana", "West Virginia", "California")
+bargraph <- filter(data, state %in% target)
+ggplot(bargraph, aes(x=state, y=median_house_inc)) +
+  geom_bar(aes(fill=state), stat="summary") + geom_errorbar(stat="summary", width=0.5) +
+  print(labs(title="Median Houshold Income of Least & Most Educated States", y="Median Household Income", x="State"))
+```
+
+
+## Dimensionality Reduction
+
+##### To begin my cluster analysis/PAM I started by choosing my number of clusters using the silhouette method, which gave me a cluster number of 2. I then processed my numeric variables by using `scale`. I then used PAM to run my cluster analysis and visualized the pairwise combinations of all my variables. I also created a 3D visualization of the variables `average_hate_crime`, `PercentBachelorsOrHigher`, and `share_vote_trump`. I then confirmed and interpreted the average silhouette width with `silinfo$avg.width`. My average silhoutte width was 0.32, which gives an interpretation that the structure of my data is weak and could be artifical; however, this seems to be the highest average silhouette width for my data.
+
+```{R}
+library(cluster)
+#choose numeric data 
+pam <- data %>% select(-state)
+#silhouette method
+sil_width<-vector()
+for(i in 2:10){
+  pam_fit <- pam(pam, diss=TRUE, k=i)
+  sil_width[i] <- pam_fit$silinfo$avg.width
+}
+ggplot()+geom_line(aes(x=1:10,y=sil_width))+scale_x_continuous(name="k",breaks=1:10)
+#process data
+PAM <- pam %>% scale %>% pam(2)
+#clustering
+pamclust <- pam %>% mutate(cluster=as.factor(PAM$clustering), na.rm=T)
+#cluster analysis
+pamclust %>% group_by(cluster) %>% summarize_if(is.numeric,mean,na.rm=T)
+#visualization
+library(GGally)
+ggpairs(pamclust, columns=1:5, aes(color=cluster))
+#3D graph
+library(plotly)
+pamclust <- pamclust %>% select(average_hate_crime, PercentBachelorsOrHigher, share_vote_trump, cluster)
+colnames(pamclust) <- c("HateCrime", "CollegeEducation", "VotedTrump", "cluster")
+pamclust %>% plot_ly(x=~HateCrime, y=~CollegeEducation, z=~VotedTrump, color=~cluster, type ="scatter3d", mode ="markers") %>%
+  layout(autosize = F, width = 900, height = 400)
+#interpret 
+PAM$silinfo$avg.width
+plot(PAM,which=2)
+```

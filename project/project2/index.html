@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Klarissa Flores" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Can you Predict Whether you will get Accepted into Medical School?</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project2/">Can you Predict Whether you will get Accepted into Medical School?</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         November 25, 2020 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="klarissa-flores-kmf2747" class="section level2">
+<h2>Klarissa Flores (kmf2747)</h2>
+<div id="the-dataset-medgpa-gives-information-regarding-55-medical-school-applicants.-the-variables-include-whether-they-were-accepted-or-denied-the-sex-of-the-applicant-their-bcpm-gpa-which-is-their-grade-point-average-in-the-subjects-of-biology-chemistry-physics-and-math-their-overall-college-gpa-their-subscores-in-areas-of-verbal-reasoning-physical-science-writing-and-biological-sciences-i-didnt-care-much-about-these-subscore-variables-their-mcat-score-and-the-number-of-applications-they-sent-out-to-medical-schools." class="section level5">
+<h5>The dataset 'MedGPA' gives information regarding 55 medical school applicants. The variables include whether they were accepted or denied, the sex of the applicant, their BCPM GPA (which is their grade point average in the subjects of biology, chemistry, physics, and math), their overall college GPA, their subscores in areas of verbal reasoning, physical science, writing, and biological sciences (I didn't care much about these subscore variables), their MCAT score, and the number of applications they sent out to medical schools.</h5>
+<pre class="r"><code>MedGPA = read.csv(&quot;MedGPA.csv&quot;)
+head(MedGPA)</code></pre>
+<pre><code>##   X Accept Acceptance Sex BCPM  GPA VR PS WS BS MCAT Apps
+## 1 1      D          0   F 3.59 3.62 11  9  9  9   38    5
+## 2 2      A          1   M 3.75 3.84 12 13  8 12   45    3
+## 3 3      A          1   F 3.24 3.23  9 10  5  9   33   19
+## 4 4      A          1   F 3.74 3.69 12 11  7 10   40    5
+## 5 5      A          1   F 3.53 3.38  9 11  4 11   35   11
+## 6 6      A          1   M 3.59 3.72 10  9  7 10   36    5</code></pre>
+</div>
+</div>
+<div id="manova" class="section level2">
+<h2>MANOVA</h2>
+<div id="manova-assumptions-were-tested-such-as-multivariate-normalities-of-dvs-and-since-that-did-give-us-a-p-value-.05-i-did-not-test-homogeneity-of-covariance-matrices.-i-then-performed-a-manova-to-determine-whether-bcpm-gpa-mcat-score-and-number-of-applications-sent-in-differ-by-whether-or-not-you-get-accepted-into-medical-school.-the-overall-manova-gave-a-p-value-of-.05-therefore-it-was-significant-and-a-follow-up-anova-was-performed.-this-showed-that-all-variables-besides-number-of-applications-were-significant-and-then-a-univariate-anova-and-t-tests-were-performed.-to-calculate-the-probability-of-a-type-i-error-i-took-0.05-divided-by-the-number-of-tests-performed-1-manova-2-anovas-and-3-t-tests-and-got-a-probability-of-0.01.-follow-up-t-tests-were-then-conducted-using-the-bonferonni-correction.-in-conclusion-we-find-that-bcpm-gpa-and-mcat-score-all-differed-significantly-by-whether-or-not-you-got-accepted." class="section level5">
+<h5>MANOVA assumptions were tested such as multivariate normalities of DVs, and since that did give us a p-value &lt; .05 I did not test homogeneity of covariance matrices. I then performed a MANOVA to determine whether BCPM, GPA, MCAT score, and number of applications sent in differ by whether or not you get accepted into medical school. The overall MANOVA gave a p-value of &lt; .05; therefore, it was significant and a follow-up ANOVA was performed. This showed that all variables besides number of applications were significant, and then a univariate ANOVA and t-tests were performed. To calculate the probability of a type I error I took 0.05 divided by the number of tests performed (1 MANOVA, 2 ANOVAs, and 3 t-tests) and got a probability of 0.01. Follow-up t-tests were then conducted using the bonferonni correction. In conclusion, we find that BCPM, GPA, and MCAT score all differed significantly by whether or not you got accepted.</h5>
+<pre class="r"><code>library(rstatix)
+group &lt;- MedGPA$Accept 
+DVs &lt;- MedGPA %&gt;% select(BCPM,GPA,MCAT,Apps)
+#test multivariate normality for each group (null: assumption met)
+sapply(split(DVs,group), mshapiro_test)</code></pre>
+<pre><code>##           A         D           
+## statistic 0.9533242 0.832119    
+## p.value   0.2073555 0.0008212247</code></pre>
+<pre class="r"><code>#if any p &lt; .05, stop. If not, test homogeneity of covariance matrices.
+#view covariance matrices for each group
+lapply(split(DVs,group), cov)</code></pre>
+<pre><code>## $A
+##             BCPM         GPA       MCAT        Apps
+## BCPM  0.07209609  0.05627356  0.5123678 -0.00354023
+## GPA   0.05627356  0.04946437  0.4314943 -0.15011494
+## MCAT  0.51236782  0.43149425 17.2367816 -5.45747126
+## Apps -0.00354023 -0.15011494 -5.4574713 22.18850575
+## 
+## $D
+##             BCPM         GPA       MCAT        Apps
+## BCPM  0.11798900  0.08650867  0.5456167 -0.02726667
+## GPA   0.08650867  0.07090933  0.4685167 -0.13471667
+## MCAT  0.54561667  0.46851667 22.5266667  1.75333333
+## Apps -0.02726667 -0.13471667  1.7533333 23.74000000</code></pre>
+<pre class="r"><code>man &lt;- manova(cbind(BCPM,GPA,MCAT,Apps)~Accept, data=MedGPA)
+summary(man)</code></pre>
+<pre><code>## Df Pillai approx F num Df den Df Pr(&gt;F)
+## Accept 1 0.31559 5.764 4 50 0.0006788 ***
+## Residuals 53
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man)</code></pre>
+<pre><code>## Response BCPM :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Accept 1 1.6922 1.69216 18.219 8.179e-05 ***
+## Residuals 53 4.9225 0.09288
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response GPA :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Accept 1 1.2947 1.29472 21.879 2.043e-05 ***
+## Residuals 53 3.1363 0.05918
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response MCAT :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Accept 1 212.4 212.402 10.819 0.001789 **
+## Residuals 53 1040.5 19.632
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Response Apps :
+## Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Accept 1 3.5 3.5006 0.1529 0.6973
+## Residuals 53 1213.2 22.8911</code></pre>
+<pre class="r"><code>MedGPA %&gt;% group_by(Accept) %&gt;% summarize(mean(BCPM), mean(GPA), mean(MCAT))</code></pre>
+<pre><code>## # A tibble: 2 x 4
+##   Accept `mean(BCPM)` `mean(GPA)` `mean(MCAT)`
+##   &lt;fct&gt;         &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+## 1 A              3.66        3.69         38.1
+## 2 D              3.31        3.39         34.1</code></pre>
+<pre class="r"><code>pairwise.t.test(MedGPA$BCPM, MedGPA$Accept, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  MedGPA$BCPM and MedGPA$Accept 
+## 
+##   A      
+## D 8.2e-05
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(MedGPA$GPA, MedGPA$Accept, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  MedGPA$GPA and MedGPA$Accept 
+## 
+##   A    
+## D 2e-05
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(MedGPA$MCAT, MedGPA$Accept, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  MedGPA$MCAT and MedGPA$Accept 
+## 
+##   A     
+## D 0.0018
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>#did 1 MANOVA, 2 ANOVAs, and t-tests(6 tests).
+.05/5</code></pre>
+<pre><code>## [1] 0.01</code></pre>
+<pre class="r"><code>pairwise.t.test(MedGPA$BCPM, MedGPA$Accept, p.adj=&quot;bonferroni&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  MedGPA$BCPM and MedGPA$Accept 
+## 
+##   A      
+## D 8.2e-05
+## 
+## P value adjustment method: bonferroni</code></pre>
+<pre class="r"><code>pairwise.t.test(MedGPA$GPA, MedGPA$Accept, p.adj=&quot;bonferroni&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  MedGPA$GPA and MedGPA$Accept 
+## 
+##   A    
+## D 2e-05
+## 
+## P value adjustment method: bonferroni</code></pre>
+<pre class="r"><code>pairwise.t.test(MedGPA$MCAT, MedGPA$Accept, p.adj=&quot;bonferroni&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  MedGPA$MCAT and MedGPA$Accept 
+## 
+##   A     
+## D 0.0018
+## 
+## P value adjustment method: bonferroni</code></pre>
+</div>
+</div>
+<div id="randomization-test" class="section level2">
+<h2>Randomization Test</h2>
+<div id="a-randomization-test-for-the-difference-in-mean-mcat-scores-based-on-acceptance-was-done.-the-null-hypothesis-is-that-mean-mcat-score-is-the-same-for-applicants-that-were-accepted-and-denied.-the-alternative-hypothesis-is-that-mean-mcat-score-is-different-for-applicants-that-were-accepted-and-denied.-after-running-the-test-a-p-value-0.05-was-obtained-meaning-we-can-successfully-reject-our-null-hypothesis.-this-confirmed-that-mean-mcat-score-does-differ-significantly-between-applicants-that-were-accepted-and-denied." class="section level5">
+<h5>A randomization test for the difference in mean MCAT scores based on acceptance was done. The null hypothesis is that mean MCAT score is the same for applicants that were accepted and denied. The alternative hypothesis is that mean MCAT score is different for applicants that were accepted and denied. After running the test a p-value &lt; 0.05 was obtained, meaning we can successfully reject our null hypothesis. This confirmed that mean MCAT score does differ significantly between applicants that were accepted and denied.</h5>
+<pre class="r"><code>MedGPA %&gt;% group_by(Accept) %&gt;% summarize(meanMCAT = mean(MCAT))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   Accept meanMCAT
+##   &lt;fct&gt;     &lt;dbl&gt;
+## 1 A          38.1
+## 2 D          34.1</code></pre>
+<pre class="r"><code>MedGPA %&gt;% group_by(Accept) %&gt;% summarize(m = mean(MCAT)) %&gt;% summarize(diff(m))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `diff(m)`
+##       &lt;dbl&gt;
+## 1     -3.95</code></pre>
+<pre class="r"><code>rand &lt;- vector()
+
+for (i in 1:5000) { 
+  samp &lt;- data.frame(MCAT = sample(MedGPA$MCAT), accept = MedGPA$Accept)
+  rand[i] &lt;- mean(samp[samp$accept == &quot;A&quot;,]$MCAT) - mean(samp[samp$accept == &quot;D&quot;,]$MCAT)
+}
+mean(rand &lt; -3.95 | rand &gt; 3.95)</code></pre>
+<pre><code>## [1] 8e-04</code></pre>
+<pre class="r"><code>{hist(rand, main = &quot;&quot;, ylab = &quot;&quot;); abline(v = c(-3.95, 3.95), col = &quot;red&quot;)}</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t.test(data=MedGPA, MCAT~Accept)</code></pre>
+<pre><code>##
+## Welch Two Sample t-test
+##
+## data: MCAT by Accept
+## t = 3.2489, df = 48.16, p-value = 0.002115
+## alternative hypothesis: true difference in means is not
+equal to 0
+## 95 percent confidence interval:
+## 1.504450 6.388883
+## sample estimates:
+## mean in group A mean in group D
+## 38.06667 34.12000</code></pre>
+</div>
+</div>
+<div id="linear-regression" class="section level2">
+<h2>Linear Regression</h2>
+<div id="a-linear-regression-was-performed-to-predict-mcat-score-from-gpa-and-bcpm-which-were-both-mean-centered.-based-on-the-coefficiant-estimates-gpa-had-a-positive-effect-on-mcat-score-while-bcpm-had-a-negative-effect.-the-interaction-however-between-gpa-and-bcpm-had-a-positive-effect-on-mcat-score.-after-plotting-the-regression-between-mcat-score-and-a-mean-centered-gpa-we-can-assume-linearity-normality-and-homoskedasticity-is-met.-after-recomputing-regression-results-with-robust-standard-errors-i-noticed-the-coefficiant-estimates-did-not-change.-taking-ss-regression-over-ss-total-i-found-this-model-explains-0.293-or-29.3-of-the-variation-in-the-outcome." class="section level5">
+<h5>A linear regression was performed to predict MCAT score from GPA and BCPM (which were both mean centered). Based on the coefficiant estimates, GPA had a positive effect on MCAT score while BCPM had a negative effect. The interaction, however, between GPA and BCPM had a positive effect on MCAT score. After plotting the regression between MCAT score and a mean centered GPA, we can assume linearity, normality, and homoskedasticity is met. After recomputing regression results with robust standard errors I noticed the coefficiant estimates did not change. Taking SS regression over SS total, I found this model explains 0.293 (or 29.3%) of the variation in the outcome.</h5>
+<pre class="r"><code>library(sandwich)
+library(lmtest)
+MedGPA$GPA_c &lt;- MedGPA$GPA - mean(MedGPA$GPA)
+MedGPA$BCPM_c &lt;- MedGPA$BCPM - mean(MedGPA$BCPM)
+linfit &lt;- lm(MCAT ~ GPA_c*BCPM_c, data=MedGPA)
+summary(linfit)</code></pre>
+<pre><code>##
+## Call:
+## lm(formula = MCAT ~ GPA_c * BCPM_c, data = MedGPA)
+##
+## Residuals:
+## Min 1Q Median 3Q Max
+## -11.4795 -2.4920 -0.1341 2.7046 8.6716
+##
+## Coefficients:
+## Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 36.2583 0.6814 53.211 &lt;2e-16 ***
+## GPA_c 9.8073 6.9300 1.415 0.163
+## BCPM_c -0.5683 5.7335 -0.099 0.921
+## GPA_c:BCPM_c 0.1532 4.0872 0.037 0.970
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## Residual standard error: 4.167 on 51 degrees of freedom
+## Multiple R-squared: 0.2933, Adjusted R-squared: 0.2517
+## F-statistic: 7.056 on 3 and 51 DF, p-value: 0.0004673</code></pre>
+<pre class="r"><code>coef(linfit)</code></pre>
+<pre><code>##  (Intercept)        GPA_c       BCPM_c GPA_c:BCPM_c 
+##   36.2582778    9.8073014   -0.5682915    0.1531758</code></pre>
+<pre class="r"><code>MedGPA %&gt;% ggplot(aes(GPA_c,MCAT)) + geom_point() + geom_smooth(method=&quot;lm&quot;, se=F)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>coeftest(linfit, vcov=vcovHC(linfit))[,1:2]</code></pre>
+<pre><code>##                Estimate Std. Error
+## (Intercept)  36.2582778  0.6958418
+## GPA_c         9.8073014  7.4241513
+## BCPM_c       -0.5682915  6.1155602
+## GPA_c:BCPM_c  0.1531758  7.8027847</code></pre>
+<pre class="r"><code>SST &lt;- sum((MedGPA$MCAT-mean(MedGPA$MCAT))^2) #SS Total
+SSR &lt;- sum((linfit$fitted.values-mean(MedGPA$MCAT))^2) #SS Regression
+SSE &lt;- sum(linfit$residuals^2) #SS Error
+SSR/SST # proportion of variance explained</code></pre>
+<pre><code>## [1] 0.2933102</code></pre>
+</div>
+</div>
+<div id="bootstrapped-standard-errors" class="section level2">
+<h2>Bootstrapped Standard Errors</h2>
+<div id="bootstrapped-standard-errors-were-computed-after-resampling-for-residuals.-compared-to-the-original-and-robust-ses-which-were-the-same-the-se-for-gpa-is-lower-but-the-ses-for-bcpm-and-the-interaction-became-higher." class="section level5">
+<h5>Bootstrapped standard errors were computed after resampling for residuals. Compared to the original and robust SEs (which were the same), the SE for GPA is lower, but the SEs for BCPM and the interaction became higher.</h5>
+<pre class="r"><code>resids &lt;- linfit$residuals #save residuals
+fitted &lt;- linfit$fitted.values #save yhats/predictions
+
+resid_resamp &lt;- replicate(5000,{
+  new_resids &lt;- sample(resids, replace=TRUE) 
+  MedGPA$new_y &lt;- fitted+new_resids 
+  fit &lt;- lm(new_y~GPA_c*BCPM_c, data=MedGPA) 
+  coef(fit) 
+}) 
+
+## Estimated SEs
+resid_resamp %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept)    GPA_c   BCPM_c GPA_c:BCPM_c
+## 1   0.6616206 6.763312 5.577327     3.928986</code></pre>
+<pre class="r"><code>## Empirical 95% CI
+resid_resamp %&gt;% t %&gt;% as.data.frame %&gt;% pivot_longer(1:3) %&gt;% group_by(name) %&gt;%
+  summarize(lower=quantile(value,.025), upper=quantile(value,.975)) </code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   name         lower upper
+##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
+## 1 (Intercept)  35.0   37.5
+## 2 BCPM_c      -11.3   10.2
+## 3 GPA_c        -3.71  23.0</code></pre>
+</div>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>Logistic Regression</h2>
+<div id="this-logistic-regression-model-predicts-acceptance-from-number-of-applications-and-mcat-score-without-the-interaction.-based-on-the-coefficiant-estimates-the-number-of-applications-you-send-in-and-your-mcat-score-both-have-a-positive-effect-on-whether-or-not-you-get-accepted-into-medical-school.-however-based-on-p-values-this-relationship-is-not-significant-for-the-number-of-applications-p-0.97-but-is-significant-for-mcat-score-p-0.006.-a-confusion-matrix-was-generated-and-from-that-accuracy-0.636-sensitivity-tpr-0.667-specificity-tnr-0.6-precision-ppv-0.6-and-auc-0.74-were-generated.-a-density-plot-and-roc-curve-were-generated.-from-the-roc-plot-we-also-got-an-auc-of-0.74-this-auc-value-is-fair-meaning-its-quite-hard-to-predict-acceptance-from-just-mcat-score-and-number-of-applications." class="section level5">
+<h5>This logistic regression model predicts acceptance from number of applications and MCAT score (without the interaction). Based on the coefficiant estimates, the number of applications you send in and your MCAT score both have a positive effect on whether or not you get accepted into medical school. However, based on p-values, this relationship is not significant for the number of applications (p = 0.97), but is significant for MCAT score (p = 0.006). A confusion matrix was generated, and from that accuracy (0.636), sensitivity (TPR = 0.667), specificity (TNR = 0.6), precision (PPV = 0.6), and AUC (0.74) were generated. A density plot and ROC curve were generated. From the ROC plot we also got an AUC of 0.74, this AUC value is fair, meaning it's quite hard to predict acceptance from just MCAT score and number of applications.</h5>
+<pre class="r"><code>fit &lt;- glm(Acceptance ~ Apps + MCAT, data = MedGPA, family = &quot;binomial&quot;)
+summary(fit)</code></pre>
+<pre><code>##
+## Call:
+## glm(formula = Acceptance ~ Apps + MCAT, family =
+&quot;binomial&quot;,
+## data = MedGPA)
+##
+## Deviance Residuals:
+## Min 1Q Median 3Q Max
+## -1.7915 -1.0299 0.4276 0.9218 1.6608
+##
+## Coefficients:
+## Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -8.75183 3.38499 -2.585 0.00972 **
+## Apps 0.00250 0.06231 0.040 0.96800
+## MCAT 0.24646 0.09028 2.730 0.00633 **
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1
+##
+## (Dispersion parameter for binomial family taken to be 1)
+##
+## Null deviance: 75.791 on 54 degrees of freedom
+## Residual deviance: 64.696 on 52 degrees of freedom
+## AIC: 70.696
+##
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>coeftest(fit)</code></pre>
+<pre><code>##
+## z test of coefficients:
+##
+## Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -8.7518329 3.3849884 -2.5855 0.009724 **
+## Apps 0.0024998 0.0623085 0.0401 0.967998
+## MCAT 0.2464582 0.0902795 2.7299 0.006334 **
+## ---
+## Signif. codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1
+&#39; &#39; 1</code></pre>
+<pre class="r"><code>probs &lt;- predict(fit,type=&quot;response&quot;)
+MedGPA$probs &lt;- predict(fit,type=&quot;response&quot;)
+table(predict=as.numeric(probs&gt;.5), truth=MedGPA$Acceptance) %&gt;% addmargins</code></pre>
+<pre><code>##        truth
+## predict  0  1 Sum
+##     0   15 10  25
+##     1   10 20  30
+##     Sum 25 30  55</code></pre>
+<pre class="r"><code>#accuracy
+(15+20)/55</code></pre>
+<pre><code>## [1] 0.6363636</code></pre>
+<pre class="r"><code>#sensitivity (TPR)
+mean(MedGPA[MedGPA$Acceptance==1,]$probs&gt;.5) #proportion of y=1 where prob is &gt;.5</code></pre>
+<pre><code>## [1] 0.6666667</code></pre>
+<pre class="r"><code>20/30</code></pre>
+<pre><code>## [1] 0.6666667</code></pre>
+<pre class="r"><code>#specificity (TNR)
+mean(MedGPA[MedGPA$Acceptance==0,]$probs&lt;.5) #proportion of y=0 where prob is &lt;.5</code></pre>
+<pre><code>## [1] 0.6</code></pre>
+<pre class="r"><code>15/25</code></pre>
+<pre><code>## [1] 0.6</code></pre>
+<pre class="r"><code>#precision
+15/25</code></pre>
+<pre><code>## [1] 0.6</code></pre>
+<pre class="r"><code>#AUC
+auc &lt;- replicate(5000,{
+  rand_pos &lt;- sample(MedGPA[MedGPA$Acceptance==1,]$probs)
+  rand_neg &lt;- sample(MedGPA[MedGPA$Acceptance==0,]$probs)
+  case_when(rand_pos &gt; rand_neg ~ 1, rand_pos == rand_neg ~ .5, rand_pos &lt; rand_neg ~0)
+})
+mean(auc)</code></pre>
+<pre><code>## [1] 0.7364733</code></pre>
+<pre class="r"><code>MedGPA$logit &lt;- predict(fit,type=&quot;link&quot;)
+MedGPA %&gt;% mutate(Acceptance=factor(Acceptance,levels=c(&quot;1&quot;,&quot;0&quot;))) %&gt;% 
+  ggplot(aes(logit, fill=Acceptance)) + geom_density(alpha=.3) +
+  geom_vline(xintercept=0,lty=2)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>library(plotROC) 
+ROCplot &lt;- ggplot(MedGPA) + geom_roc(aes(d=Acceptance,m=probs), n.cuts=0) 
+ROCplot</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-6-2.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.7366667</code></pre>
+</div>
+</div>
+<div id="lasso" class="section level2">
+<h2>LASSO</h2>
+<div id="i-began-by-removing-the-writing-subscore-variable-because-it-included-an-na-and-the-accept-varible-since-it-was-the-categorical-version-of-my-binary-variable.-from-the-in-sample-classification-diagnostics-i-got-an-accuracy-of-0.89-sensitivity-of-0.9-specificity-of-0.88-precision-of-0.9-and-an-auc-of-0.95-which-is-great.-after-performing-a-10-fold-cv-every-diagnostic-variable-decreased-they-went-from-0.9-to-0.7.-the-auc-went-from-0.95-great-to-0.85-good-so-either-way-the-variables-in-my-dataset-are-pretty-good-at-predicting-acceptance.-after-performing-a-lasso-only-the-variables-of-male-sex-gpa-and-the-subscores-in-physical-and-biological-sciences-were-retained.-after-performing-a-10-fold-cv-using-only-these-retained-varibles-i-again-got-an-auc-of-0.85.-compared-to-my-in-sample-auc-of-0.95-this-is-a-little-lower-but-these-retained-variables-are-still-good-at-predicting-acceptance." class="section level5">
+<h5>I began by removing the writing subscore variable because it included an NA, and the &quot;Accept&quot; varible since it was the categorical version of my binary variable. From the in-sample classification diagnostics, I got an accuracy of 0.89, sensitivity of 0.9, specificity of 0.88, precision of 0.9, and an AUC of 0.95 (which is great). After performing a 10-fold CV every diagnostic variable decreased (they went from ~0.9 to ~0.7). The AUC went from 0.95 (great) to 0.85 (good), so either way the variables in my dataset are pretty good at predicting acceptance. After performing a LASSO, only the variables of male sex, GPA, and the subscores in physical and biological sciences were retained. After performing a 10-fold CV using only these retained varibles, I again got an AUC of 0.85. Compared to my in-sample AUC of 0.95, this is a little lower, but these retained variables are still good at predicting acceptance.</h5>
+<pre class="r"><code>MedGPA = read.csv(&quot;MedGPA.csv&quot;)
+MedGPA &lt;- MedGPA %&gt;% select(-c(WS,Accept, X))
+
+#in-sample classification diagnostics 
+logfit &lt;- glm(Acceptance~., data = MedGPA, family = &quot;binomial&quot;)
+prob &lt;- predict(logfit, type = &quot;response&quot;)
+
+class_diag &lt;- function(prob,truth) {
+  
+  tab &lt;- table(factor(prob &gt; 0.5, levels = c(&quot;FALSE&quot;, &quot;TRUE&quot;)), 
+               truth)
+  acc = sum(diag(tab))/sum(tab)
+  sens = tab[2, 2]/colSums(tab)[2]
+  spec = tab[1, 1]/colSums(tab)[1]
+  ppv = tab[2, 2]/rowSums(tab)[2]
+  
+  if (is.numeric(truth) == FALSE &amp; is.logical(truth) == FALSE) 
+    truth &lt;- as.numeric(truth) - 1
+  
+  ord &lt;- order(prob, decreasing = TRUE)
+  prob &lt;- prob[ord]
+  truth &lt;- truth[ord]
+  
+  TPR = cumsum(truth)/max(1, sum(truth))
+  FPR = cumsum(!truth)/max(1, sum(!truth))
+  
+  dup &lt;- c(prob[-1] &gt;= prob[-length(prob)], FALSE)
+  TPR &lt;- c(0, TPR[!dup], 1)
+  FPR &lt;- c(0, FPR[!dup], 1)
+  
+  n &lt;- length(TPR)
+  auc &lt;- sum(((TPR[-1] + TPR[-n])/2) * (FPR[-1] - FPR[-n]))
+  
+  data.frame(acc, sens, spec, ppv, auc)
+}
+class_diag(prob, MedGPA$Acceptance)</code></pre>
+<pre><code>##         acc sens spec ppv   auc
+## 1 0.8909091  0.9 0.88 0.9 0.952</code></pre>
+<pre class="r"><code>#10-fold CV
+set.seed(1234)
+k = 10
+
+data &lt;- MedGPA[sample(nrow(MedGPA)),]
+folds &lt;- cut(seq(1:nrow(MedGPA)), breaks = k, labels = F)
+
+diags &lt;- NULL
+for (i in 1:k) {
+  train &lt;- data[folds != i, ]
+  test &lt;- data[folds == i, ]
+  truth &lt;- test$Acceptance
+  
+  fitted &lt;- glm(Acceptance~., data = train, family = &quot;binomial&quot;)
+  probz &lt;- predict(fitted, newdata = test, type = &quot;response&quot;)
+  
+  diags &lt;- rbind(diags, class_diag(probz, truth))
+}
+
+summarize_all(diags, mean)</code></pre>
+<pre><code>##         acc      sens      spec  ppv       auc
+## 1 0.7866667 0.7833333 0.7916667 0.85 0.8541667</code></pre>
+<pre class="r"><code>#LASSO
+library(glmnet)
+set.seed(1234)
+med_preds &lt;- model.matrix(Acceptance ~ ., data = MedGPA)[, -1]  #predictors (drop intercept)
+med_resp &lt;- as.matrix(MedGPA$Acceptance)  #grab response
+
+cv &lt;- cv.glmnet(med_preds, med_resp, family = &quot;binomial&quot;)
+lasso_fit &lt;- glmnet(med_preds, med_resp, family = &quot;binomial&quot;, lambda = cv$lambda.1se)
+coef(lasso_fit)</code></pre>
+<pre><code>## 9 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                       s0
+## (Intercept) -10.63273091
+## SexM         -0.11456318
+## BCPM          .         
+## GPA           1.74982153
+## VR            .         
+## PS            0.03984831
+## BS            0.43887675
+## MCAT          .         
+## Apps          .</code></pre>
+<pre class="r"><code>#LASSO 10-fold CV
+set.seed(1234)
+k = 10
+
+med &lt;- MedGPA %&gt;% mutate(SexM = ifelse(MedGPA$Sex == &quot;M&quot;, 1, 0))
+
+data &lt;- med[sample(nrow(med)),]
+folds &lt;- cut(seq(1:nrow(med)), breaks = k, labels = F)
+
+diags &lt;- NULL
+for (i in 1:k) {
+  train &lt;- data[folds != i,]
+  test &lt;- data[folds == i,]
+  truth &lt;- test$Acceptance
+  
+  fits &lt;- glm(Acceptance ~ SexM + GPA + PS, BS, data = train, family = &quot;binomial&quot;)
+  proba &lt;- predict(fits, newdata = test, type = &quot;response&quot;)
+  
+  diags &lt;- rbind(diags, class_diag(proba, truth))
+}
+
+diags %&gt;% summarize_all(mean)</code></pre>
+<pre><code>##    acc      sens      spec   ppv       auc
+## 1 0.75 0.7833333 0.7333333 0.775 0.8555556</code></pre>
+</div>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

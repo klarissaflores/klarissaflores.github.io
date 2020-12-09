@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on My Website</title>
+    <link>/project/</link>
+    <description>Recent content in Projects on My Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 25 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Can you Predict Whether you will get Accepted into Medical School?</title>
+      <link>/project/project2/</link>
+      <pubDate>Wed, 25 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project2/</guid>
+      <description>Klarissa Flores (kmf2747) The dataset &#39;MedGPA&#39; gives information regarding 55 medical school applicants. The variables include whether they were accepted or denied, the sex of the applicant, their BCPM GPA (which is their grade point average in the subjects of biology, chemistry, physics, and math), their overall college GPA, their subscores in areas of verbal reasoning, physical science, writing, and biological sciences (I didn&#39;t care much about these subscore variables), their MCAT score, and the number of applications they sent out to medical schools.</description>
+    </item>
+    
+    <item>
+      <title>What You Can Tell About a State from Their Level of Education</title>
+      <link>/project/project1/</link>
+      <pubDate>Sun, 18 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>Klarissa Flores (kmf2747) library(dplyr) library(tidyverse)  Data The dataset crime contains information about how hate crimes may be tied to income inequality in the US. It is part of the fivethirtyeight package on R. It includes data about median household income, the average number of hate crimes recorded by the FBI and the Southern Poverty Law Center, the share of the population that voted for Trump, and more.</description>
+    </item>
+    
+  </channel>
+</rss>
