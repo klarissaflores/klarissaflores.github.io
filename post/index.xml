@@ -6,17 +6,15 @@
     <description>Recent content in Posts on Klarissa&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 08 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 09 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Test Post</title>
-      <link>/post/2020/12/08/test-post/</link>
-      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      <title>Python - a Calculator that can Graph</title>
+      <link>/post/2020/12/09/test-post/</link>
+      <pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/2020/12/08/test-post/</guid>
-      <description> Heading of my post! Content of my post!
-Subheading More content!
-hist(quakes$mag) 2+2 ## 4 how to upload image at 45:00.
-  </description>
+      <guid>/post/2020/12/09/test-post/</guid>
+      <description>Python - a literal graphing calculator! Python as a calculator. There are so many things you can do using python. One of the easiest things is to use is as a calculator. Running simple math equations on python is as simple as typing it out because python does all the math for you!
+This can be something as simple as adding 2 and 2, but you can do anything from simple addition and subtraction to complex multiplication and divison.</description>
     </item>
     
   </channel>

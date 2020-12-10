@@ -1,27 +1,57 @@
 ---
-title: Test Post
+title: Python - a Calculator that can Graph
 author: ''
-date: '2020-12-08'
+date: '2020-12-09'
 slug: test-post
 categories: []
 tags: []
 description: ''
 ---
 
-# Heading of my post!
+# Python - a literal graphing calculator!
 
-Content of my post!
+## Python as a calculator.
 
-## Subheading
+There are so many things you can do using python. One of the easiest things is to use is as a calculator. Running simple math equations on python is as simple as typing it out because python does all the math for you!
 
-More content!
-
-````{R}
-hist(quakes$mag)
-````
+This can be something as simple as adding 2 and 2, but you can do anything from simple addition and subtraction to complex multiplication and divison.
 
 ````{python}
 2+2
+6-5
+5-6
+157*371
+1975/5
 ````
 
-how to upload image at 45:00.
+You can even do longer equations and python will follow PEMDAS rules to solve it!
+
+````{python}
+10*(6+7)
+````
+
+## Using python to make graphs.
+
+One of my favorite things to do using python is to create graphs. It is as simple as labeling your x and y-axis and python will, again, do all the work for you. What's great is that python and R talk to each other! R comes with so many amazing datasets, and what's cool is you can use those datasets to carry out codes in python!
+
+Let me show you how this works. First you load the dataset in R, I'm using the dataset `college_all_ages` from the `fivethirtyeight` package. This dataset gives information about employment (such as median salary and the employment and unemplyment rate) based on your college major. 
+
+````{R}
+library(reticulate)
+college_all_ages <- fivethirtyeight::college_all_ages 
+data <- as.data.frame(college_all_ages)
+head(data)
+````
+
+Now I want to create a graph; however, in R the code to create a graph is a little more complex compared to using python. This is why it's great that you can easily switch between the two! 
+
+I'm going to make a scatter plot, since it's easiest to make inferences on relationships using this kind of plot. I want to see if unemployment rate has anything to do with salary, do jobs that can be more easily attained pay less? Doing this is as easy as running `plt.scatter(x-axis variable, y-axis variable).
+````{python}
+
+````
+
+So, python is a literal calculator that can also graph (a graphing calculator, if you will). 
+
+Here is a fun meme that I can relate to! I love using R, but python (in my opinion) is a lot more simple and easy to understand! The reason I love this meme is because I was very commited to R when I was first introduced to python, but now I'm team python all the way! 
+
+![](/post/2020-12-08-test-post_files/image.jpg){width=70%}
