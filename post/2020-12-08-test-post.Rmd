@@ -47,6 +47,9 @@ Now I want to create a graph; however, in R the code to create a graph is a litt
 
 I'm going to make a scatter plot, since it's easiest to make inferences on relationships using this kind of plot. I want to see if unemployment rate has anything to do with salary, do jobs that can be more easily attained pay less? Doing this is as easy as running `plt.scatter(x-axis variable, y-axis variable).
 ````{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 ````
 
