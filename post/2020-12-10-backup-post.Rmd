@@ -1,5 +1,5 @@
 ---
-title: Falling in love with python...
+title: Falling in love with Python...
 author: ''
 date: '2020-12-10'
 slug: backup-post
@@ -30,7 +30,7 @@ You can even do longer equations and python will follow PEMDAS rules to solve it
 10*(6+7)
 ````
 
-You can also do some more complex things such as using regular expressions to match (and return) exactly what you want. For example, let's say you have a long sentence and the only part you care about in that sentence are the numbers. You can use `re.findall` to pull out just the numbers. 
+You can also do some more complex things such as using regular expressions to pull out exactly what you want from a specific string. For example, let's say you have a long sentence and the only parts you care about in that sentence are the numbers. You can use `re.findall` to pull out just the numbers `\d` tells it to pull out anything that is a digit, and `+` tells it to do this one or more times. 
 
 ````{python}
 import re
@@ -60,4 +60,4 @@ print(r.start,finish)
 
 ![](/post/2020-12-08-test-post_files/image.jpg){width=70%}
 
-I can really relate to this meme! I love using R, but python (in my opinion) is a lot more simple and easy to understand! The reason I love this meme is because I was very commited to R when I was first introduced to Python, but after getting the hang of it I'm team python all the way (just don't tell R). 
+I can really relate to this meme! I love using R, but python (in my opinion) is a lot more simple and easy to understand! The reason I love this meme is because I was very commited to R when I was first introduced to python, but after getting the hang of it I'm team python all the way (just don't tell R). 
