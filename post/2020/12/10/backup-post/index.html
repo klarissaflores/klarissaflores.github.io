@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Klarissa Flores" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../img/favicon.ico">
+    <title>Falling in love with python...</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../../../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../../../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../../../../post/">BLOG</a></li>
+        
+        <li><a href="../../../../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../../../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../../../../post/2020/12/10/backup-post/">Falling in love with python...</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         December 10, 2020 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="falling-in-love-with-python..." class="section level1">
+<h1>Falling in love with Python...</h1>
+<div id="python-can-do-some-really-cool-things." class="section level2">
+<h2>Python can do some really cool things.</h2>
+<p>R is great, don't get me wrong, but there is just something about python that actually makes running codes seem simple. For example, one of the easiest things you can do in python is to use it as a calculator. Running simple math equations on python is as simple as typing it out because python does all the math for you!</p>
+<p>This can be something as simple as adding 2 and 2, but you can do anything from simple addition and subtraction to complex multiplication and divison.</p>
+<pre class="python"><code>2+2</code></pre>
+<pre><code>## 4</code></pre>
+<pre class="python"><code>35-30</code></pre>
+<pre><code>## 5</code></pre>
+<pre class="python"><code>30-31</code></pre>
+<pre><code>## -1</code></pre>
+<pre class="python"><code>157*371</code></pre>
+<pre><code>## 58247</code></pre>
+<pre class="python"><code>1975/5</code></pre>
+<pre><code>## 395.0</code></pre>
+<p>You can even do longer equations and python will follow PEMDAS rules to solve it! Just type it in exactly how you would into a calculator.</p>
+<pre class="python"><code>10*(6+7)</code></pre>
+<pre><code>## 130</code></pre>
+<p>You can also do some more complex things such as using regular expressions to match (and return) exactly what you want. For example, let's say you have a long sentence and the only part you care about in that sentence are the numbers. You can use <code>re.findall</code> to pull out just the numbers.</p>
+<pre class="python"><code>import re
+string = &quot;Blah, blah, blah... 15, 17, 22... blah... 57, 28, 32... blah, blah... 157, 23, 24... blah, blah, blah... 999, 2, 157.&quot;
+print(string)</code></pre>
+<pre><code>## Blah, blah, blah... 15, 17, 22... blah... 57, 28, 32... blah, blah... 157, 23, 24... blah, blah, blah... 999, 2, 157.</code></pre>
+<pre class="python"><code>re.findall(r&quot;\d+&quot;,string)</code></pre>
+<pre><code>## [&#39;15&#39;, &#39;17&#39;, &#39;22&#39;, &#39;57&#39;, &#39;28&#39;, &#39;32&#39;, &#39;157&#39;, &#39;23&#39;, &#39;24&#39;, &#39;999&#39;, &#39;2&#39;, &#39;157&#39;]</code></pre>
+</div>
+<div id="r-and-python-are-actually-friends..." class="section level2">
+<h2>R and Python are actually friends...</h2>
+<p>What's great is that python and R can actually talk to each other! For example, you can start out a sentence in R and python can finish it off (it's cute how they can finish each other's sentences).</p>
+<p>Let me show you how this would work... first, you start off your sentence in R.</p>
+<pre class="r"><code>library(reticulate)
+start &lt;- &quot;Python is&quot;</code></pre>
+<p>Then you just finish it off in python and add them together!</p>
+<pre class="python"><code>finish = &quot;better than R&quot;
+print(r.start,finish)</code></pre>
+<pre><code>## Python is better than R</code></pre>
+<div class="figure">
+<img src="../../../../../post/2020-12-08-test-post_files/image.jpg" style="width:70.0%" />
+
+</div>
+<p>I can really relate to this meme! I love using R, but python (in my opinion) is a lot more simple and easy to understand! The reason I love this meme is because I was very commited to R when I was first introduced to Python, but after getting the hang of it I'm team python all the way (just don't tell R).</p>
+</div>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../../../../js/docs.min.js"></script>
+<script src="../../../../../js/main.js"></script>
+
+<script src="../../../../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

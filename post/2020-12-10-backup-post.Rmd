@@ -1,0 +1,63 @@
+---
+title: Falling in love with python...
+author: ''
+date: '2020-12-10'
+slug: backup-post
+categories: []
+tags: []
+description: ''
+---
+
+# Falling in love with Python... 
+
+## Python can do some really cool things.
+
+R is great, don't get me wrong, but there is just something about python that actually makes running codes seem simple. For example, one of the easiest things you can do in python is to use it as a calculator. Running simple math equations on python is as simple as typing it out because python does all the math for you!
+
+This can be something as simple as adding 2 and 2, but you can do anything from simple addition and subtraction to complex multiplication and divison.
+
+````{python}
+2+2
+35-30
+30-31
+157*371
+1975/5
+````
+
+You can even do longer equations and python will follow PEMDAS rules to solve it! Just type it in exactly how you would into a calculator.
+
+````{python}
+10*(6+7)
+````
+
+You can also do some more complex things such as using regular expressions to match (and return) exactly what you want. For example, let's say you have a long sentence and the only part you care about in that sentence are the numbers. You can use `re.findall` to pull out just the numbers. 
+
+````{python}
+import re
+string = "Blah, blah, blah... 15, 17, 22... blah... 57, 28, 32... blah, blah... 157, 23, 24... blah, blah, blah... 999, 2, 157."
+print(string)
+
+re.findall(r"\d+",string)
+````
+
+## R and Python are actually friends...
+
+What's great is that python and R can actually talk to each other! For example, you can start out a sentence in R and python can finish it off (it's cute how they can finish each other's sentences). 
+
+Let me show you how this would work... first, you start off your sentence in R.
+
+````{R}
+library(reticulate)
+start <- "Python is"
+````
+
+Then you just finish it off in python and add them together!
+
+````{python}
+finish = "better than R"
+print(r.start,finish)
+````
+
+![](/post/2020-12-08-test-post_files/image.jpg){width=70%}
+
+I can really relate to this meme! I love using R, but python (in my opinion) is a lot more simple and easy to understand! The reason I love this meme is because I was very commited to R when I was first introduced to Python, but after getting the hang of it I'm team python all the way (just don't tell R). 

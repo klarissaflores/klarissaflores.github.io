@@ -97,7 +97,36 @@
 <p>One of my favorite things to do using python is to create graphs. It is as simple as labeling your x and y-axis and python will, again, do all the work for you. What's great is that python and R talk to each other! R comes with so many amazing datasets, and what's cool is you can use those datasets to carry out codes in python!</p>
 <p>Let me show you how this works. First you load the dataset in R, I'm using the dataset <code>college_all_ages</code> from the <code>fivethirtyeight</code> package. This dataset gives information about employment (such as median salary and the employment and unemplyment rate) based on your college major.</p>
 <pre class="r"><code>library(reticulate)
-college_all_ages &lt;- fivethirtyeight::college_all_ages 
+devtools::install_github(&quot;rstudio/reticulate&quot;)</code></pre>
+<pre><code>## Skipping install of &#39;reticulate&#39; from a github remote, the SHA1 (0acf685b) has not changed since last install.
+##   Use `force = TRUE` to force installation</code></pre>
+<pre class="r"><code>reticulate::install_miniconda</code></pre>
+<pre><code>## function (path = miniconda_path(), update = TRUE, force = FALSE) 
+## {
+##     check_forbidden_install(&quot;Miniconda&quot;)
+##     if (grepl(&quot; &quot;, path, fixed = TRUE)) 
+##         stop(&quot;cannot install Miniconda into a path containing spaces&quot;)
+##     install_miniconda_preflight(path, force)
+##     url &lt;- miniconda_installer_url()
+##     installer &lt;- miniconda_installer_download(url)
+##     message(&quot;* Installing Miniconda -- please wait a moment ...&quot;)
+##     miniconda_installer_run(installer, path)
+##     ok &lt;- miniconda_exists(path) &amp;&amp; miniconda_test(path)
+##     if (!ok) 
+##         stopf(&quot;Miniconda installation failed [unknown reason]&quot;)
+##     if (update) 
+##         miniconda_update(path)
+##     conda &lt;- miniconda_conda(path)
+##     python &lt;- miniconda_python_package()
+##     conda_create(&quot;r-reticulate&quot;, packages = c(python, &quot;numpy&quot;), 
+##         conda = conda)
+##     messagef(&quot;* Miniconda has been successfully installed at %s.&quot;, 
+##         shQuote(path))
+##     path
+## }
+## &lt;bytecode: 0x56188b953690&gt;
+## &lt;environment: namespace:reticulate&gt;</code></pre>
+<pre class="r"><code>college_all_ages &lt;- fivethirtyeight::college_all_ages 
 data &lt;- as.data.frame(college_all_ages)
 head(data)</code></pre>
 <pre><code>##   major_code                                 major
@@ -123,15 +152,17 @@ head(data)</code></pre>
 ## 6       2070        0.03179089 35000  50000 75000</code></pre>
 <p>Now I want to create a graph; however, in R the code to create a graph is a little more complex compared to using python. This is why it's great that you can easily switch between the two!</p>
 <p>I'm going to make a scatter plot, since it's easiest to make inferences on relationships using this kind of plot. I want to see if unemployment rate has anything to do with salary, do jobs that can be more easily attained pay less? Doing this is as easy as running `plt.scatter(x-axis variable, y-axis variable).</p>
-<pre class="python"><code>import numpy as np
-import matplotlib.pyplot as plt
-</code></pre>
 <p>So, python is a literal calculator that can also graph (a graphing calculator, if you will).</p>
 <p>Here is a fun meme that I can relate to! I love using R, but python (in my opinion) is a lot more simple and easy to understand! The reason I love this meme is because I was very commited to R when I was first introduced to python, but now I'm team python all the way!</p>
 <div class="figure">
 <img src="../../../../../post/2020-12-08-test-post_files/image.jpg" style="width:70.0%" />
 
 </div>
+<pre class="r"><code>library(reticulate)
+something &lt;- &quot;This is&quot;</code></pre>
+<pre class="python"><code>dumb = &quot;really cool&quot;
+print(r.something,dumb)</code></pre>
+<pre><code>## This is really cool</code></pre>
 </div>
 </div>
 
