@@ -30,7 +30,7 @@ You can even do longer equations and python will follow PEMDAS rules to solve it
 10*(6+7)
 ````
 
-You can also do some more complex things such as using regular expressions to pull out exactly what you want from a specific string. For example, let's say you have a long sentence and the only parts you care about in that sentence are the numbers. You can use `re.findall` to pull out just the numbers `\d` tells it to pull out anything that is a digit, and `+` tells it to do this one or more times. 
+You can also do some more complex things such as using regular expressions to pull out exactly what you want from a specific string. For example, let's say you have a long sentence and the only parts you care about in that sentence are the numbers. You can use `re.findall` to pull out just the numbers. Typing in `\d` tells it to pull out anything that is a digit, and `+` tells it to do this one or more times. 
 
 ````{python}
 import re
@@ -42,7 +42,7 @@ re.findall(r"\d+",string)
 
 ## R and Python are actually friends...
 
-What's great is that python and R can actually talk to each other! For example, you can start out a sentence in R and python can finish it off (it's cute how they can finish each other's sentences). 
+What's great is that python and R can actually talk to each other! For example, you can start out a sentence in R and python can finish it off (it's cute how they can finish each others' sentences). 
 
 Let me show you how this would work... first, you start off your sentence in R.
 
